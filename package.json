@@ -1,0 +1,23 @@
+{
+  "name": "r-online",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "spike:manifest": "node spike/update-manifest.cjs",
+    "test:spike": "node spike/test.cjs",
+    "test:browser": "node tests/browser/all.cjs",
+    "check": "node scripts/check.mjs",
+    "gallery": "node scripts/render-gallery.mjs",
+    "packages": "node scripts/pin-packages.mjs",
+    "docs": "node scripts/render-docs.mjs",
+    "offline": "node scripts/update-offline.mjs",
+    "serve": "node tests/browser/server.cjs"
+  },
+  "devDependencies": {
+    "ace-builds": "1.4.1",
+    "js-sha512": "0.9.0",
+    "playwright": "1.64.1",
+    "webr": "0.6.0"
+  }
+}

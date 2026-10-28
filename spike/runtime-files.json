@@ -1,0 +1,10 @@
+[
+  "libRblas.so",
+  "libRlapack.so",
+  "vfs/etc/fonts/fonts.conf",
+  "vfs/usr/lib/R/library/grDevices/libs.data.gz",
+  "vfs/usr/lib/R/library/grDevices/libs.js.metadata",
+  "vfs/usr/lib/R/library/translations/DESCRIPTION",
+  "vfs/usr/share/fonts/NotoSans-Regular.ttf",
+  "vfs/var/cache/fontconfig/3830d5c3ddfd5cd38a049b759396e72e-le32d8.cache-9"
+]

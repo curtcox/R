@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#167c80"><title>256t saved-function calls · R Online</title><link rel="icon" href="../icon.svg"><link rel="stylesheet" href="../src/docs.css?v=1"></head><body><header><a class="brand" href="../"><img src="../icon.svg" width="34" height="34" alt="">R Online</a><a href="../gallery.html">Sample gallery ↗</a></header><main>
+<!-- Generated from docs/256t-calls.md by npm run docs. -->
+<h1>256t saved-function calls</h1>
+<p><code>t256</code> is available in every program. A CID identifies exact UTF-8 text. Small texts of at most 64 bytes are encoded directly in the CID; larger texts use a six-byte length and SHA-512 digest and are fetched from 256t.us, then 256t.org. Every remote result is verified before R receives it, and each result is fetched at most once while the worker remains alive. Stop replaces the worker and cache.</p>
+<pre><code class="language-r">text &lt;- 'function(name) paste0(&quot;Hello, &quot;, name, &quot;!&quot;)'
+cid &lt;- t256$cid(text)
+greet &lt;- t256$fn(cid)
+greet(&quot;Ada&quot;)</code></pre>
+<div class="table"><table><thead><tr><th>Function</th><th>Result</th></tr></thead><tbody><tr><td><code>t256$text(cid)</code></td><td>Verified text, including any saved envelope</td></tr><tr><td><code>t256$source(cid)</code></td><td>R source unwrapped from an R Online envelope</td></tr><tr><td><code>t256$fn(cid)</code></td><td>A function defined by the saved source</td></tr><tr><td><code>t256$parameters(cid)</code></td><td>A list of literal arguments</td></tr><tr><td><code>t256$call(cid, params_cid = NULL)</code></td><td>Call a saved function with saved or embedded arguments</td></tr><tr><td><code>t256$cid(text)</code></td><td>The content ID for UTF-8 text</td></tr></tbody></table></div>
+<p>A saved function may use a literal <code>function(...)</code>, an R lambda, or a final assignment such as <code>greet &lt;- function(name) ...</code>. Earlier top-level expressions run first, so a saved function can load packages. A trailing <code>if (sys.nframe() == 0L) { ... }</code> demonstration block is skipped by <code>t256$fn()</code>. This is ordinary R code and can perform network requests or other side effects.</p>
+<p>A parameters document contains arguments exactly as written between parentheses: <code>6, h = 7</code>. Only literal constants, unary numeric signs, and <code>c()</code> or <code>list()</code> of those constants are allowed. Calls to arbitrary functions, assignments, and other executable expressions are rejected by walking the parsed R syntax tree.</p>
+<p>A combined document can define a function and call it in the final expression:</p>
+<pre><code class="language-r">f &lt;- function(x) x^2
+f(6)</code></pre>
+<p><code>t256$call()</code> uses that final call's literal arguments. A separate parameter CID overrides them. Parameters are data, while saved function source is executable R.</p>
+<p>The gallery's four small saved documents use inline CIDs and need no paid publication. Their exact sources live in <code>examples/saved/</code> and their CID-named fixtures in <code>tests/fixtures/256t/</code>. Larger shared programs require publication to HashBin; no paid documents have been published by this implementation.</p>
+<p>R cannot await <code>crypto.subtle</code> with webR's PostMessage channel. The worker uses a vendored MIT SHA-512 implementation for synchronous dynamic calls, checked against Node/WebCrypto vectors in tests. No R hashing package is needed.</p>
+</main></body></html>

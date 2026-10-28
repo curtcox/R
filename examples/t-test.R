@@ -1,0 +1,5 @@
+set.seed(42)
+x <- rnorm(30, mean=1)
+t.test(x, mu=0)
+cat("P(Z > 1.96) =", pnorm(1.96, lower.tail=FALSE), "\n")
+curve(dnorm(x), from=-4, to=4, col="#167c80", lwd=3)

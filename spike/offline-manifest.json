@@ -1,0 +1,20 @@
+{
+  "hashes": {
+    "index.html": "4c733fe828a266b4db10caf715bdbd6ec2246f789fe655fe8810dd40830f70a4",
+    "page.mjs": "faa5314ec312011c646737aede9e2fdfa967b2e4426bdafa6bc49a4f01d5feae",
+    "worker.js": "40690dc4fbf7effef79debf023c8e3f71ae28e06e47feaff632656241a3d2220",
+    "runtime-files.json": "57e385fbdbf7a5af4c78850705dc4696cff84537cfa4c6e1ab642b00e191392e",
+    "../vendor/hashbin-sdk-v0.3.0.mjs": "117c9047194a7f08daabe384d12c60c40407251ead445af81c50791828c14288",
+    "../node_modules/webr/dist/webr-worker.js": "c64282f5e15b51ef473e26548203313f868208c8988b2c7bdfc22c5730de418b",
+    "../node_modules/webr/dist/R.js": "162adb529111d739b37ef1b9f889eb7afbe4fb3288f8a58166cd6d0b04fd7376",
+    "../node_modules/webr/dist/R.wasm": "5df459fb222d332e358cf08e4019c0e114398579ed8c62242bfcceeda81222ba",
+    "../node_modules/webr/dist/libRblas.so": "d831496cc1d1e2748519439a0ea509ba966b56db10d13132db52331a270aac74",
+    "../node_modules/webr/dist/libRlapack.so": "df8ca333754f0dd95715df437f6e6d633e4ffbff0176bcb11c15fe3e5dd4e387",
+    "../node_modules/webr/dist/vfs/etc/fonts/fonts.conf": "a93efbf9eec83d72a463f1d52f54043a8afa6ae7cc05609deda73232525e7bc0",
+    "../node_modules/webr/dist/vfs/usr/lib/R/library/grDevices/libs.data.gz": "558a09f14c830848510b6279c1141802d392fe2d0aaf66eca174faa03dc7bb1d",
+    "../node_modules/webr/dist/vfs/usr/lib/R/library/grDevices/libs.js.metadata": "f4b2da4dd2f93011eaa259f8dddc23c63dd144fecc8322fab7885341952e2b7b",
+    "../node_modules/webr/dist/vfs/usr/lib/R/library/translations/DESCRIPTION": "ba7da3ac60466f5f466c4f706f50bcafbb924f94b0888d333bb410451b41afd2",
+    "../node_modules/webr/dist/vfs/usr/share/fonts/NotoSans-Regular.ttf": "f3961a9cde016d41a4879aecda1474d3a36d6bf54fa0e4643de029cc2248b0e8",
+    "../node_modules/webr/dist/vfs/var/cache/fontconfig/3830d5c3ddfd5cd38a049b759396e72e-le32d8.cache-9": "48cd35d8c3d7a4456f05bbf3c10bac83de082d354b2ec02c8a80e325ac3f0839"
+  }
+}

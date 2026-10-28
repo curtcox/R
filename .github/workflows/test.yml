@@ -1,0 +1,46 @@
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+  browser:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Fetch and verify pinned gallery packages
+        run: npm run packages -- --verify
+      - name: Browser and full gallery
+        run: npm run test:browser
+        env:
+          BROWSER: ${{ matrix.browser }}
+          FULL_GALLERY: '1'
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-${{ matrix.browser }}
+          path: test-results/

@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#167c80"><title>Program input · R Online</title><link rel="icon" href="../icon.svg"><link rel="stylesheet" href="../src/docs.css?v=1"></head><body><header><a class="brand" href="../"><img src="../icon.svg" width="34" height="34" alt="">R Online</a><a href="../gallery.html">Sample gallery ↗</a></header><main>
+<!-- Generated from docs/input.md by npm run docs. -->
+<h1>Program input</h1>
+<p>Put one answer per line in the <strong>Program input</strong> box. Input is supplied before a run; the browser cannot pause R to ask for another answer. Every run starts at the beginning of the box. Source and input travel together in shared links and HashBin saves.</p>
+<pre><code class="language-r">name &lt;- readline(&quot;Name: &quot;)
+cat(&quot;Hello&quot;, name, &quot;\n&quot;)
+values &lt;- scan(&quot;stdin&quot;, quiet = TRUE)
+mean(values)</code></pre>
+<p><code>readline()</code> consumes and echoes one line. When there are no lines left, it returns an empty string and prints a one-time hint to add input. <code>interactive()</code> returns <code>FALSE</code>.</p>
+<p><code>readLines(&quot;stdin&quot;)</code>, <code>readLines(stdin())</code>, and <code>readLines(file(&quot;stdin&quot;))</code> share the same connection and echo the lines they consume. Use <code>n = 1</code> to read one line. Ordinary files still use R's normal readers.</p>
+<p><code>scan()</code> and <code>scan(&quot;stdin&quot;)</code> read and echo the remaining lines. Use <code>nlines</code> to reserve later lines for another reader. As with non-interactive R scripts, <code>nmax</code> controls parsed values; use <code>nlines</code> when mixing scan and line readers.</p>
+<pre><code class="language-r">first &lt;- scan(&quot;stdin&quot;, nlines = 1, quiet = TRUE)
+next_answer &lt;- readline(&quot;Next answer: &quot;)</code></pre>
+<p><code>file(&quot;stdin&quot;)</code> and <code>stdin()</code> return the same text connection for the run. Namespaced calls such as <code>base::readline()</code> bypass the input helpers; use the unqualified functions above. Connections created for other files behave normally.</p>
+<p>Auto-run may run a program again while you edit it. Network requests or other side effects may repeat. Disable Auto-run while preparing a program with such side effects, then use Run.</p>
+</main></body></html>

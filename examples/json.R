@@ -1,0 +1,5 @@
+library(jsonlite)
+people <- data.frame(name=c("Ada","Grace"), score=c(98,99))
+text <- toJSON(people, pretty=TRUE)
+cat(text, "\n")
+fromJSON(text)

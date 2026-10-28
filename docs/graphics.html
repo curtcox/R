@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#167c80"><title>Graphics and rich output · R Online</title><link rel="icon" href="../icon.svg"><link rel="stylesheet" href="../src/docs.css?v=1"></head><body><header><a class="brand" href="../"><img src="../icon.svg" width="34" height="34" alt="">R Online</a><a href="../gallery.html">Sample gallery ↗</a></header><main>
+<!-- Generated from docs/graphics.md by npm run docs. -->
+<h1>Graphics and rich output</h1>
+<p>Base graphics, grid, and ggplot2 plots appear alongside console output. The runtime records completed pages and captures them eagerly before the next plot, ordinary print/cat output, or the end of the run. Multiple pages are kept in order. SVGs appear as inert images; their scripts cannot execute in the editor.</p>
+<pre><code class="language-r">options(online.plot.width = 7, online.plot.height = 5)
+plot(mpg ~ wt, data = mtcars, pch = 19, col = &quot;#167c80&quot;)
+abline(lm(mpg ~ wt, data = mtcars), col = &quot;coral&quot;, lwd = 2)</code></pre>
+<p>Plot dimensions use inches and reset each run. <code>dev.size()</code> reports the active device's dimensions. The default is 7 by 5 inches. Download offers the current SVG drawing and a PNG captured at 192 dpi (1344 by 960 pixels at the default size). You can pan and zoom the displayed plot, including on a touch screen.</p>
+<p>Data frames, matrices, tibbles, and lists print as text using R's normal methods. The helpers below create rich output explicitly.</p>
+<pre><code class="language-r">display_html(&quot;&lt;h2&gt;Results&lt;/h2&gt;&lt;p&gt;All done.&lt;/p&gt;&quot;)
+display_markdown(&quot;# Results\n**All done.**&quot;)
+display_svg('&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;&lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;40&quot; fill=&quot;teal&quot;/&gt;&lt;/svg&gt;')</code></pre>
+<p>HTML and Markdown appear in script-disabled sandboxed frames. Markdown supports headings, emphasis, inline code, lists and HTTPS links. HTML from <code>knitr::kable(format = &quot;html&quot;)</code> and printed htmltools tags uses the same output frames. External images are subject to the output frame's CSP.</p>
+<p><code>?mean</code> and <code>help(mean)</code> render R help using the same script-disabled frames. Explicit device calls such as <code>png(&quot;my-file.png&quot;)</code> retain R's normal file-writing behavior; use the default online device for automatic display.</p>
+</main></body></html>
