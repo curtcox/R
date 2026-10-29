@@ -20,9 +20,9 @@ returns `FALSE`.
 `readLines(file("stdin"))` share the same connection and echo the lines they
 consume. Use `n = 1` to read one line. Ordinary files still use R's normal readers.
 
-`scan()` and `scan("stdin")` read and echo the remaining lines. Use `nlines` to
-reserve later lines for another reader. As with non-interactive R scripts,
-`nmax` controls parsed values; use `nlines` when mixing scan and line readers.
+`scan()` and `scan("stdin")` read and echo input using R's normal scanning rules.
+`nmax` controls parsed values and `nlines` controls lines. Unread input is retained
+for subsequent readers, including partial lines left by a limited scan.
 
 ```r
 first <- scan("stdin", nlines = 1, quiet = TRUE)

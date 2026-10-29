@@ -13,11 +13,6 @@ local({
   html <- function(x) { capture(); emit('html', data = paste(x, collapse = '\n')); invisible(x) }
   markdown <- function(x) { capture(); emit('markdown', data = paste(x, collapse = '\n')); invisible(x) }
   display_svg <- function(x) { capture(); emit('svg', data = paste(x, collapse = '\n')); invisible(x) }
-  b64 <- function(bytes) {
-    # Binary conversion stays in the isolated JS worker; no package is needed.
-    assign('.online_bytes', bytes, envir = state)
-    webr::eval_js(paste0('btoa(String.fromCharCode(...Module.FS.readFile(', q(state$png), ')))'))
-  }
   device <- function(...) {
     width <- getOption('online.plot.width', 7); height <- getOption('online.plot.height', 5)
     grDevices::svg('/tmp/online-device-%03d.svg', width = width, height = height, onefile = FALSE)
@@ -42,8 +37,14 @@ local({
     invisible()
   }
   before_page <- function(...) capture()
+  before_plot <- function(...) {
+    if (grDevices::dev.cur() != 1L) {
+      position <- graphics::par('mfg')
+      if (all(position[1:2] == position[3:4])) capture()
+    }
+  }
   after_page <- function(...) { if (!isTRUE(state$capturing)) state$pending <- TRUE }
-  setHook('before.plot.new', before_page)
+  setHook('before.plot.new', before_plot)
   setHook('plot.new', after_page)
   setHook('before.grid.newpage', before_page)
   setHook('grid.newpage', after_page)
@@ -67,8 +68,15 @@ local({
     },
     scan = function(file = '', ..., nlines = 0L) {
       if (identical(file, '') || input(file)) {
-        capture(); lines <- base::readLines(state$input, n = if (nlines > 0L) nlines else -1L, warn = FALSE)
-        echo(lines); base::scan(text = paste(lines, collapse = '\n'), ..., nlines = nlines)
+        capture(); lines <- base::readLines(state$input, warn = FALSE)
+        connection <- base::textConnection(lines, open = 'r')
+        on.exit({
+          rest <- base::readLines(connection, warn = FALSE); close(connection)
+          used <- max(0L, length(lines) - length(rest))
+          if (length(rest) && used < length(lines) && !identical(rest[[1L]], lines[[used + 1L]])) used <- used + 1L
+          echo(head(lines, used)); if (length(rest)) pushBack(rest, state$input)
+        })
+        base::scan(file = connection, ..., nlines = nlines)
       } else base::scan(file = file, ..., nlines = nlines)
     }
   )
@@ -89,6 +97,8 @@ local({
     else { capture(); base::print(x, ...) }
     invisible(x)
   }
+  runtime$dev.off <- function(which = grDevices::dev.cur()) { capture(); grDevices::dev.off(which) }
+  runtime$graphics.off <- function() { capture(); grDevices::graphics.off() }
   runtime$install.packages <- function(pkgs, ...) webr::install(pkgs, ...)
   render_help <- function(topic, package = NULL) {
     found <- do.call(utils::help, list(topic = topic, package = package, help_type = 'text'))
@@ -114,11 +124,16 @@ local({
     rm(list = ls(globalenv(), all.names = TRUE), envir = globalenv())
     extra <- setdiff(names(options()), names(defaults)); if (length(extra)) options(setNames(rep(list(NULL), length(extra)), extra))
     options(defaults); options(device = device, warn = 0)
-    setHook('before.plot.new', before_page, action = 'replace'); setHook('plot.new', after_page, action = 'replace')
+    setHook('before.plot.new', before_plot, action = 'replace'); setHook('plot.new', after_page, action = 'replace')
     setHook('before.grid.newpage', before_page, action = 'replace'); setHook('grid.newpage', after_page, action = 'replace')
     setwd('/home/web_user')
     try(close(state$input), silent = TRUE)
-    state$input <- base::textConnection(strsplit(sub('\n$', '', stdin_text), '\n', fixed = TRUE)[[1L]], open = 'r')
+    lines <- if (!nzchar(stdin_text)) character() else strsplit(paste0(stdin_text, '\001'), '\n', fixed = TRUE)[[1L]]
+    if (length(lines)) {
+      lines[length(lines)] <- sub('\001$', '', lines[length(lines)])
+      if (endsWith(stdin_text, '\n')) lines <- head(lines, -1L)
+    }
+    state$input <- base::textConnection(lines, open = 'r')
     state$empty <- FALSE; state$pending <- FALSE; state$capturing <- FALSE
     invisible()
   }
@@ -157,12 +172,12 @@ local({
         location <- regmatches(conditionMessage(e), regexpr('main.R:[0-9]+', conditionMessage(e)))
         if (length(location) && nzchar(location)) current_line <<- as.integer(sub('.*:', '', location))
       }
-      error <<- format_error(e); capture(); base::cat(error, '\n', sep = '')
+      error <<- format_error(e); capture(); base::cat(error, '\n', sep = '', file = stderr())
     })
     capture()
     if (length(warnings)) {
-      base::cat(if (length(warnings) == 1L) 'Warning message:\n' else 'Warning messages:\n')
-      for (i in seq_along(warnings)) base::cat(if (length(warnings) > 1L) paste0(i, ': ') else '', conditionMessage(warnings[[i]]), '\n', sep = '')
+      base::cat(if (length(warnings) == 1L) 'Warning message:\n' else 'Warning messages:\n', file = stderr())
+      for (i in seq_along(warnings)) base::cat(if (length(warnings) > 1L) paste0(i, ': ') else '', conditionMessage(warnings[[i]]), '\n', sep = '', file = stderr())
     }
     webr::eval_js("Module._fflush(0)")
     invisible(error)

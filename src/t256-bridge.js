@@ -15,12 +15,12 @@
       if(xhr.status!==200)throw Error('256t fetch failed (HTTP '+xhr.status+')');
       const bytes=new Uint8Array(xhr.response);if(bytes.length!==size)throw Error('256t content does not match its CID');
       const result=new TextDecoder('utf-8',{fatal:true}).decode(bytes);if(cid(result)!==value)throw Error('256t content does not match its CID');
-      cache.set(value,result);return result;
+      cache.set(value,result);globalThis.Module?.webr?.channel.write({type:'online-output',data:{type:'t256-cache',cid:value,text:result}});return result;
     }catch(error){last=error;}}
     throw last||Error('256t content is unavailable');
   }
   function source(value){const body=text(value);let doc;try{doc=JSON.parse(body);}catch{}
     if(doc?.format==='hashbin-diagram'){if(doc.version!==1||doc.type!=='r'||typeof doc.src!=='string')throw Error('Saved document is not a supported R Online program');return doc.src;}return body;
   }
-  globalThis.T256Bridge=Object.freeze({text,source,cid,setServers(values){servers=values.slice();cache.clear();}});
+  globalThis.T256Bridge=Object.freeze({text,source,cid,seed(values){for(const [key,value]of Object.entries(values||{}))if(typeof value==='string'&&cid(value)===key)cache.set(key,value);},setServers(values){servers=values.slice();cache.clear();}});
 })();

@@ -55,7 +55,12 @@ class OutputView {
           const picture = document.createElementNS(ns, 'image');
           picture.setAttribute('href', url); picture.setAttribute('width', image.naturalWidth || 800); picture.setAttribute('height', image.naturalHeight || 600);
           vector.append(picture); canvas.append(vector); image.replaceWith(canvas);
-          const zoom = svgPanZoom(vector, { controlIconsEnabled: true, fit: true, center: true }); this.zooms.push(zoom);
+          const zoom = svgPanZoom(vector, { controlIconsEnabled: false, fit: true, center: true }); this.zooms.push(zoom);
+          const controls=document.createElement('div'); controls.className='output-controls';
+          for(const [label,text,action] of [['Zoom in','+',()=>zoom.zoomIn()],['Reset plot view','Reset',()=>{zoom.fit();zoom.center();}],['Zoom out','−',()=>zoom.zoomOut()]]){
+            const button=document.createElement('button');button.textContent=text;button.setAttribute('aria-label',label);button.onclick=action;controls.append(button);
+          }
+          canvas.after(controls);
           const observer = new ResizeObserver(() => { zoom.resize(); zoom.fit(); zoom.center(); }); observer.observe(canvas); this.observers.push(observer);
         };
       } else image.onclick = () => image.classList.toggle('zoomed');

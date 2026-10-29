@@ -4,7 +4,7 @@
 texts of at most 64 bytes are encoded directly in the CID; larger texts use a
 six-byte length and SHA-512 digest and are fetched from 256t.us, then 256t.org.
 Every remote result is verified before R receives it, and each result is fetched
-at most once while the worker remains alive. Stop replaces the worker and cache.
+at most once per page. Verified text is shared with replacement workers after Stop.
 
 ```r
 text <- 'function(name) paste0("Hello, ", name, "!")'

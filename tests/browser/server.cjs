@@ -8,6 +8,7 @@ function createServer(){
  let base;
  function fileFor(url){
   if(url.startsWith('/__webr__/'))return path.join(root,'node_modules/webr/dist',url.slice(10));
+  if(url==='/__packages__/PACKAGES')return path.join(root,'src/gallery-packages.dcf');
   if(url.startsWith('/__packages__/'))return path.join(root,'.webr-cache',path.basename(url));
   if(url.startsWith('/__256t__/'))return path.join(root,'tests/fixtures/256t',path.basename(url));
   return path.resolve(root,'.'+(url==='/'?'/index.html':url));

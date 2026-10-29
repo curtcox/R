@@ -5,4 +5,4 @@ for (step in 1:45) {
   z[active] <- z[active]^2 + c[active]
   count[active] <- step
 }
-image(x,y,count,col=hcl.colors(46,"Inferno"),asp=1,xlab="Real",ylab="Imaginary")
+image(x,y,count,useRaster=TRUE,col=hcl.colors(46,"Inferno"),asp=1,xlab="Real",ylab="Imaginary")

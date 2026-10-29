@@ -60,11 +60,17 @@ editor.commands.addCommand({ name: 'run-r', bindKey: { win: 'Ctrl-Enter', mac: '
 document.addEventListener('keydown', event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); run(); } });
 function selectTab(tab) {
   $('workspace').dataset.tab = tab;
-  document.querySelectorAll('[data-tab]').forEach(button => { if (button.tagName === 'BUTTON') { button.classList.toggle('selected', button.dataset.tab === tab); button.setAttribute('aria-selected', String(button.dataset.tab === tab)); } });
+  document.querySelectorAll('[data-tab]').forEach(button => { if (button.tagName === 'BUTTON') { button.classList.toggle('selected', button.dataset.tab === tab); button.setAttribute('aria-selected', String(button.dataset.tab === tab)); button.tabIndex = button.dataset.tab === tab ? 0 : -1; } });
   if (tab === 'input') $('input-pane').querySelector('details').open = true;
   editor.resize();
 }
 document.querySelectorAll('.mobile-tabs button').forEach(button => button.onclick = () => selectTab(button.dataset.tab));
+document.querySelector('.mobile-tabs').addEventListener('keydown',event=>{
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+  const tabs=[...document.querySelectorAll('.mobile-tabs button')],current=tabs.indexOf(document.activeElement);
+  const next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
+  event.preventDefault();selectTab(tabs[next].dataset.tab);tabs[next].focus();
+});
 $('more-toggle').onclick = () => { $('more').hidden = !$('more').hidden; $('more-toggle').setAttribute('aria-expanded', String(!$('more').hidden)); editor.resize(); };
 // Put the same primary actions in the mobile More panel.
 const mobileActions = document.createElement('div'); mobileActions.className = 'mobile-actions'; mobileActions.style.display = 'none';

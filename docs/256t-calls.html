@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#167c80"><title>256t saved-function calls · R Online</title><link rel="icon" href="../icon.svg"><link rel="stylesheet" href="../src/docs.css?v=1"></head><body><header><a class="brand" href="../"><img src="../icon.svg" width="34" height="34" alt="">R Online</a><a href="../gallery.html">Sample gallery ↗</a></header><main>
 <!-- Generated from docs/256t-calls.md by npm run docs. -->
 <h1>256t saved-function calls</h1>
-<p><code>t256</code> is available in every program. A CID identifies exact UTF-8 text. Small texts of at most 64 bytes are encoded directly in the CID; larger texts use a six-byte length and SHA-512 digest and are fetched from 256t.us, then 256t.org. Every remote result is verified before R receives it, and each result is fetched at most once while the worker remains alive. Stop replaces the worker and cache.</p>
+<p><code>t256</code> is available in every program. A CID identifies exact UTF-8 text. Small texts of at most 64 bytes are encoded directly in the CID; larger texts use a six-byte length and SHA-512 digest and are fetched from 256t.us, then 256t.org. Every remote result is verified before R receives it, and each result is fetched at most once per page. Verified text is shared with replacement workers after Stop.</p>
 <pre><code class="language-r">text &lt;- 'function(name) paste0(&quot;Hello, &quot;, name, &quot;!&quot;)'
 cid &lt;- t256$cid(text)
 greet &lt;- t256$fn(cid)

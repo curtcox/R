@@ -25,7 +25,7 @@ The plan is todo/master_plan.md; update its implementation record when decisions
 - R helpers live in src/r/runtime.R and src/r/t256.R. Reset globals, options,
   random seed, cwd, devices and attached packages each run. Program input starts
   over each run; unqualified readers consume/echo it. Installed packages persist
-  until worker replacement. scan nlines reserves input for subsequent readers.
+  until worker replacement. scan nmax/nlines preserve unread input for subsequent readers.
 - Share source + stdin + autorun together. Storage keys use ronline:. Incoming
   links must confirm before replacing different stored work. Envelope type is r,
   with r:{stdin,autorun}; document limit is 5 MiB. The public inspection surface is

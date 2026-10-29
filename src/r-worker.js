@@ -23,7 +23,7 @@ const RWorker = (() => {
       const p=pending.get(message.data.uuid);if(!p)return;pending.delete(message.data.uuid);const payload=message.data.resp.data;
       if(payload.payloadType==='err')p.reject(Error(payload.obj.message));else p.resolve(payload.obj);return;
     }
-    if(message.type==='online-output')core?.output(message.data);
+    if(message.type==='online-output'){if(message.data.type==='t256-cache')send(message.data);else core?.output(message.data);}
     else if(['stdout','stderr'].includes(message.type))core?.output({type:'text',stream:message.type,text:message.data+'\n'});
     else if(message.type==='system'&&message.data.type==='console.warn'&&core?.buffer)core.output({type:'text',stream:'stderr',text:message.data.data+'\n'});
     else if(message.type==='system'&&message.data.type==='setTimeoutWasm'){
@@ -38,9 +38,13 @@ const RWorker = (() => {
     }
     return records;
   }
-  let index,indexText;
+  let index,indexText,fallbackIndex;
   async function packages(names,status=()=>{}){
-    if(!index){const response=await fetch(PACKAGE_URL+'PACKAGES');if(!response.ok)throw Error('Package index is unavailable. Reconnect and retry.');indexText=await response.text();index=parseIndex(indexText);}
+    if(!index){
+      try{const response=await fetch(PACKAGE_URL+'PACKAGES');if(!response.ok)throw Error('Package index is unavailable');indexText=await response.text();}
+      catch{indexText=fallbackIndex;}
+      if(!indexText)throw Error('Package index is unavailable. Reconnect and retry.');index=parseIndex(indexText);
+    }
     const selected=new Set();
     const add=name=>{if(selected.has(name)||!index.has(name))return;selected.add(name);const p=index.get(name);
       for(const dep of ((p.Depends||'')+','+(p.Imports||'')).split(',')){const key=dep.trim().split(/[ (]/)[0];if(key&&key!=='R')add(key);}};
@@ -51,7 +55,7 @@ const RWorker = (() => {
   }
   return {async boot(modules,files){
     try{
-      engineMessage=self.onmessage;
+      engineMessage=self.onmessage;fallbackIndex=modules.packageIndex;
       send({type:'status',text:'Loading R… (~23 MB on first visit)'});
       await preload(['R.js',...files.startup].map(name=>WEBR_URL+name));
       const script=URL.createObjectURL(new Blob([bytes.get(WEBR_URL+'R.js')],{type:'text/javascript'}));
@@ -88,7 +92,7 @@ const RWorker = (() => {
       };
       core=new RCore(engine,send);await core.install(modules);
       URL.revokeObjectURL(script);
-      addEventListener('message',event=>{if(typeof event.data?.source!=='string')return;event.stopImmediatePropagation();core.run(event.data).catch(error=>send({type:'fatal',error:String(error),id:event.data.id}));});
+      addEventListener('message',event=>{if(typeof event.data?.source!=='string')return;event.stopImmediatePropagation();T256Bridge.seed(event.data.t256);core.run(event.data).catch(error=>send({type:'fatal',error:String(error),id:event.data.id}));});
       send({type:'ready'});
     }catch(error){send({type:'fatal',error:String(error)});}
   }};

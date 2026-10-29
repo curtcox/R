@@ -1,0 +1,403 @@
+Package: cli
+Version: 3.6.6
+Depends: R (>= 3.4)
+Imports: utils
+Suggests: callr, covr, crayon, digest, glue (>= 1.6.0), grDevices,
+        htmltools, htmlwidgets, knitr, methods, processx, ps (>=
+        1.3.4.9000), rlang (>= 1.0.2.9003), rmarkdown, rprojroot,
+        rstudioapi, testthat (>= 3.2.0), tibble, whoami, withr
+License: MIT + file LICENSE
+MD5sum: 9969e89a653cbd6adab0f2272549f629
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-12 20:13:34 UTC;
+        unix
+File: cli_3.6.6.tgz
+
+Package: dplyr
+Version: 1.2.1
+Depends: R (>= 4.1.0)
+Imports: cli (>= 3.6.2), generics, glue (>= 1.3.2), lifecycle (>=
+        1.0.5), magrittr (>= 1.5), methods, pillar (>= 1.9.0), R6,
+        rlang (>= 1.1.7), tibble (>= 3.2.0), tidyselect (>= 1.2.0),
+        utils, vctrs (>= 0.7.1)
+Suggests: broom, covr, DBI, dbplyr (>= 2.2.1), ggplot2, knitr, Lahman,
+        lobstr, nycflights13, purrr, rmarkdown, RSQLite, stringi (>=
+        1.7.6), testthat (>= 3.1.5), tidyr (>= 1.3.0), withr
+License: MIT + file LICENSE
+MD5sum: 743bd7ab74a190fe3a5c63b8b054fade
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 00:01:17 UTC;
+        unix
+File: dplyr_1.2.1.tgz
+
+Package: evaluate
+Version: 1.0.5
+Depends: R (>= 3.6.0)
+Suggests: callr, covr, ggplot2 (>= 3.3.6), lattice, methods, pkgload,
+        ragg (>= 1.4.0), rlang (>= 1.1.5), knitr, testthat (>= 3.0.0),
+        withr
+License: MIT + file LICENSE
+MD5sum: a2512b26c925426eda02cfa33fe3170e
+Built: R 4.6.0; ; 2026-05-13 02:04:08 UTC; unix
+File: evaluate_1.0.5.tgz
+
+Package: farver
+Version: 2.1.2
+Suggests: covr, testthat (>= 3.0.0)
+License: MIT + file LICENSE
+MD5sum: d4d2197542b63048e6d99dcefef59a43
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 02:35:54 UTC;
+        unix
+File: farver_2.1.2.tgz
+
+Package: generics
+Version: 0.1.4
+Depends: R (>= 3.6)
+Imports: methods
+Suggests: covr, pkgload, testthat (>= 3.0.0), tibble, withr
+License: MIT + file LICENSE
+MD5sum: 218be80e8ad1725dfe54cb3c3412d23b
+Built: R 4.6.0; ; 2026-05-13 04:47:17 UTC; unix
+File: generics_0.1.4.tgz
+
+Package: ggplot2
+Version: 4.0.3
+Depends: R (>= 4.1)
+Imports: cli, grDevices, grid, gtable (>= 0.3.6), isoband, lifecycle (>
+        1.0.1), rlang (>= 1.1.0), S7, scales (>= 1.4.0), stats, vctrs
+        (>= 0.6.0), withr (>= 2.5.0)
+Suggests: broom, covr, dplyr, ggplot2movies, hexbin, Hmisc, hms, knitr,
+        mapproj, maps, MASS, mgcv, multcomp, munsell, nlme, profvis,
+        quantreg, quarto, ragg (>= 1.2.6), RColorBrewer, roxygen2,
+        rpart, sf (>= 0.7-3), svglite (>= 2.1.2), testthat (>= 3.1.5),
+        tibble, vdiffr (>= 1.0.6), xml2
+Enhances: sp
+License: MIT + file LICENSE
+MD5sum: 853c8cabb5f13906af19a92c26210247
+Built: R 4.6.0; ; 2026-05-13 05:28:23 UTC; unix
+File: ggplot2_4.0.3.tgz
+
+Package: glue
+Version: 1.8.1
+Depends: R (>= 4.1)
+Imports: methods
+Suggests: crayon, DBI (>= 1.2.0), dplyr, knitr, rlang, rmarkdown,
+        RSQLite, testthat (>= 3.2.0), vctrs (>= 0.3.0), waldo (>=
+        0.5.3), withr
+License: MIT + file LICENSE
+MD5sum: 4e61fadc9bdd09c8b66fe9b1f8532127
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 06:00:42 UTC;
+        unix
+File: glue_1.8.1.tgz
+
+Package: gtable
+Version: 0.3.6
+Depends: R (>= 4.0)
+Imports: cli, glue, grid, lifecycle, rlang (>= 1.1.0), stats
+Suggests: covr, ggplot2, knitr, profvis, rmarkdown, testthat (>= 3.0.0)
+License: MIT + file LICENSE
+MD5sum: e7fbf6603a3ff216ddcf38249bfaf3b4
+Built: R 4.6.0; ; 2026-05-13 06:49:40 UTC; unix
+File: gtable_0.3.6.tgz
+
+Package: highr
+Version: 0.12
+Depends: R (>= 3.3.0)
+Imports: xfun (>= 0.18)
+Suggests: knitr, markdown, testit
+License: GPL
+MD5sum: e99608d3cf6075e29c6ce2139d2b226e
+Built: R 4.6.0; ; 2026-05-13 07:35:50 UTC; unix
+File: highr_0.12.tgz
+
+Package: isoband
+Version: 0.3.0
+Imports: cli, grid, rlang, utils
+LinkingTo: cpp11
+Suggests: covr, ggplot2, knitr, magick, bench, rmarkdown, sf, testthat
+        (>= 3.0.0), xml2
+License: MIT + file LICENSE
+MD5sum: b622cf2a0d972e4e9d867e360a484692
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 09:19:24 UTC;
+        unix
+File: isoband_0.3.0.tgz
+
+Package: jsonlite
+Version: 2.0.0
+Depends: methods
+Suggests: httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf
+License: MIT + file LICENSE
+MD5sum: 4c4a5b39fdf8d03ea1d194080827352e
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 09:48:20 UTC;
+        unix
+File: jsonlite_2.0.0.tgz
+
+Package: knitr
+Version: 1.52
+Depends: R (>= 3.6.0)
+Imports: evaluate (>= 0.15), highr (>= 0.11), methods, tools, xfun (>=
+        0.52), yaml (>= 2.1.19)
+Suggests: bslib, DBI (>= 0.4-1), digest, formatR, gifski, gridSVG,
+        htmlwidgets (>= 0.7), jpeg, JuliaCall (>= 0.11.1), magick,
+        litedown (>= 0.10), otel, otelsdk, png, ragg (>= 1.5.0),
+        reticulate (>= 1.4), rgl (>= 0.95.1201), rlang, rmarkdown,
+        sass, showtext, styler (>= 1.2.0), targets (>= 0.6.0), testit,
+        tibble, tikzDevice (>= 0.10), tinytex (>= 0.56), webshot,
+        rstudioapi, svglite
+License: GPL
+MD5sum: 81d8d086076f1ea11ad24f449508ca70
+Built: R 4.6.0; ; 2026-10-10 05:14:11 UTC; unix
+File: knitr_1.52.tgz
+
+Package: labeling
+Version: 0.4.3
+Imports: stats, graphics
+License: MIT + file LICENSE | Unlimited
+MD5sum: 8716cde95fcede366579cc56d8952769
+Built: R 4.6.0; ; 2026-05-13 10:18:30 UTC; unix
+File: labeling_0.4.3.tgz
+
+Package: lifecycle
+Version: 1.0.5
+Depends: R (>= 3.6)
+Imports: cli (>= 3.4.0), rlang (>= 1.1.0)
+Suggests: covr, knitr, lintr (>= 3.1.0), rmarkdown, testthat (>=
+        3.0.1), tibble, tidyverse, tools, vctrs, withr, xml2
+License: MIT + file LICENSE
+MD5sum: 56e8354c9d8473374c6139f2ed97be80
+Built: R 4.6.0; ; 2026-05-13 10:59:31 UTC; unix
+File: lifecycle_1.0.5.tgz
+
+Package: magrittr
+Version: 2.0.5
+Depends: R (>= 3.4.0)
+Suggests: covr, knitr, rlang, rmarkdown, testthat
+License: MIT + file LICENSE
+MD5sum: b8de5e142ae82a1e9ebdcc8cc60bc885
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 11:55:50 UTC;
+        unix
+File: magrittr_2.0.5.tgz
+
+Package: pillar
+Version: 1.11.1
+Imports: cli (>= 2.3.0), glue, lifecycle, rlang (>= 1.0.2), utf8 (>=
+        1.1.0), utils, vctrs (>= 0.5.0)
+Suggests: bit64, DBI, debugme, DiagrammeR, dplyr, formattable, ggplot2,
+        knitr, lubridate, nanotime, nycflights13, palmerpenguins,
+        rmarkdown, scales, stringi, survival, testthat (>= 3.1.1),
+        tibble, units (>= 0.7.2), vdiffr, withr
+License: MIT + file LICENSE
+MD5sum: 8f3914dfbf8e31befcb5be91e82bb7b0
+Built: R 4.6.0; ; 2026-05-13 19:27:56 UTC; unix
+File: pillar_1.11.1.tgz
+
+Package: pkgconfig
+Version: 2.0.3
+Imports: utils
+Suggests: covr, testthat, disposables (>= 1.0.3)
+License: MIT + file LICENSE
+MD5sum: d4c1433142b2533b9243ec4b41e45505
+Built: R 4.6.0; ; 2026-05-13 19:32:25 UTC; unix
+File: pkgconfig_2.0.3.tgz
+
+Package: purrr
+Version: 1.2.2
+Depends: R (>= 4.1)
+Imports: cli (>= 3.6.1), lifecycle (>= 1.0.3), magrittr (>= 1.5.0),
+        rlang (>= 1.1.1), vctrs (>= 0.6.3)
+LinkingTo: cli
+Suggests: carrier (>= 0.3.0), covr, dplyr (>= 0.7.8), httr, knitr,
+        lubridate, mirai (>= 2.5.1), rmarkdown, testthat (>= 3.0.0),
+        tibble, tidyselect
+License: MIT + file LICENSE
+MD5sum: 82b3d19fd069af28bb2c02b9ad6327a8
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 21:16:40 UTC;
+        unix
+File: purrr_1.2.2.tgz
+
+Package: R6
+Version: 2.6.1
+Depends: R (>= 3.6)
+Suggests: lobstr, testthat (>= 3.0.0)
+License: MIT + file LICENSE
+MD5sum: 2e7090562ea49b1d39c450c6377b6977
+Built: R 4.6.0; ; 2026-05-13 22:00:12 UTC; unix
+File: R6_2.6.1.tgz
+
+Package: RColorBrewer
+Version: 1.1-3
+Depends: R (>= 2.0.0)
+License: Apache License 2.0
+MD5sum: 504f10e0d20f54951e847f0b5d53e145
+Built: R 4.6.0; ; 2026-05-13 22:52:51 UTC; unix
+File: RColorBrewer_1.1-3.tgz
+
+Package: rlang
+Version: 1.3.0
+Depends: R (>= 4.0.0)
+Imports: utils
+Suggests: cli (>= 3.1.0), covr, crayon, desc, fs, glue, knitr,
+        magrittr, methods, pillar, pkgload, rmarkdown, stats, testthat
+        (>= 3.3.2), tibble, usethis, vctrs (>= 0.2.3), withr
+Enhances: winch
+License: MIT + file LICENSE
+MD5sum: a758fe02ecac28000732930e4d7fd69c
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-10-11 05:07:19 UTC;
+        unix
+File: rlang_1.3.0.tgz
+
+Package: S7
+Version: 0.2.2
+Depends: R (>= 3.5.0)
+Imports: utils
+Suggests: bench, callr, covr, knitr, methods, rmarkdown, testthat (>=
+        3.2.0), tibble
+License: MIT + file LICENSE
+MD5sum: d5ae73c0b21af2b5fba3fd0be60007a7
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 02:35:52 UTC;
+        unix
+File: S7_0.2.2.tgz
+
+Package: scales
+Version: 1.4.0
+Depends: R (>= 4.1)
+Imports: cli, farver (>= 2.0.3), glue, labeling, lifecycle, R6,
+        RColorBrewer, rlang (>= 1.1.0), viridisLite
+Suggests: bit64, covr, dichromat, ggplot2, hms (>= 0.5.0), stringi,
+        testthat (>= 3.0.0)
+License: MIT + file LICENSE
+MD5sum: c6a768d2e66ef32d1933e7f2541240a2
+Built: R 4.6.0; ; 2026-05-14 02:57:52 UTC; unix
+File: scales_1.4.0.tgz
+
+Package: stringi
+Version: 1.8.9
+Depends: R (>= 3.4)
+Imports: tools, utils, stats
+License: file LICENSE
+License_is_FOSS: yes
+MD5sum: c219f03eaa536d54881626a39aacc54a
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-10-11 19:25:31 UTC;
+        unix
+File: stringi_1.8.9.tgz
+
+Package: stringr
+Version: 1.6.0
+Depends: R (>= 4.1.0)
+Imports: cli, glue (>= 1.6.1), lifecycle (>= 1.0.3), magrittr, rlang
+        (>= 1.0.0), stringi (>= 1.5.3), vctrs (>= 0.4.0)
+Suggests: covr, dplyr, gt, htmltools, htmlwidgets, knitr, rmarkdown,
+        testthat (>= 3.0.0), tibble
+License: MIT + file LICENSE
+MD5sum: b291c4a51e4742f58ca3d8111557661f
+Built: R 4.6.0; ; 2026-05-14 07:14:55 UTC; unix
+File: stringr_1.6.0.tgz
+
+Package: tibble
+Version: 3.3.1
+Depends: R (>= 3.4.0)
+Imports: cli, lifecycle (>= 1.0.0), magrittr, methods, pillar (>=
+        1.8.1), pkgconfig, rlang (>= 1.0.2), utils, vctrs (>= 0.5.0)
+Suggests: bench, bit64, blob, brio, callr, DiagrammeR, dplyr, evaluate,
+        formattable, ggplot2, here, hms, htmltools, knitr, lubridate,
+        nycflights13, pkgload, purrr, rmarkdown, stringi, testthat (>=
+        3.0.2), tidyr, withr
+License: MIT + file LICENSE
+MD5sum: 2158baadd4be00f1e9b7daafd1f46ee3
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 08:46:36 UTC;
+        unix
+File: tibble_3.3.1.tgz
+
+Package: tidyr
+Version: 1.3.2
+Depends: R (>= 4.1.0)
+Imports: cli (>= 3.4.1), dplyr (>= 1.1.0), glue, lifecycle (>= 1.0.3),
+        magrittr, purrr (>= 1.0.1), rlang (>= 1.1.1), stringr (>=
+        1.5.0), tibble (>= 2.1.1), tidyselect (>= 1.2.1), utils, vctrs
+        (>= 0.5.2)
+LinkingTo: cpp11 (>= 0.4.0)
+Suggests: covr, data.table, knitr, readr, repurrrsive (>= 1.1.0),
+        rmarkdown, testthat (>= 3.0.0)
+License: MIT + file LICENSE
+MD5sum: d5c6eabd452cb4801269076e116cdfb3
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 08:58:42 UTC;
+        unix
+File: tidyr_1.3.2.tgz
+
+Package: tidyselect
+Version: 1.2.1
+Depends: R (>= 3.4)
+Imports: cli (>= 3.3.0), glue (>= 1.3.0), lifecycle (>= 1.0.3), rlang
+        (>= 1.0.4), vctrs (>= 0.5.2), withr
+Suggests: covr, crayon, dplyr, knitr, magrittr, rmarkdown, stringr,
+        testthat (>= 3.1.1), tibble (>= 2.1.3)
+License: MIT + file LICENSE
+MD5sum: 420fa2dbdf489ac69846156133226212
+Built: R 4.6.0; ; 2026-05-14 08:59:59 UTC; unix
+File: tidyselect_1.2.1.tgz
+
+Package: utf8
+Version: 1.2.6
+Depends: R (>= 2.10)
+Suggests: cli, covr, knitr, rlang, rmarkdown, testthat (>= 3.0.0),
+        withr
+License: Apache License (== 2.0) | file LICENSE
+MD5sum: 5bfeac36a8dfb027caf5a2457f4c83f8
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 10:44:55 UTC;
+        unix
+File: utf8_1.2.6.tgz
+
+Package: vctrs
+Version: 0.7.3
+Depends: R (>= 4.0.0)
+Imports: cli (>= 3.4.0), glue, lifecycle (>= 1.0.3), rlang (>= 1.1.7)
+Suggests: bit64, covr, crayon, dplyr (>= 0.8.5), generics, knitr,
+        pillar (>= 1.4.4), pkgdown (>= 2.0.1), rmarkdown, testthat (>=
+        3.0.0), tibble (>= 3.1.3), waldo (>= 0.2.0), withr, xml2,
+        zeallot
+License: MIT + file LICENSE
+MD5sum: 0987e2b4d65141176b517116bbf51b20
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 10:58:38 UTC;
+        unix
+File: vctrs_0.7.3.tgz
+
+Package: viridisLite
+Version: 0.4.3
+Depends: R (>= 2.10)
+Suggests: hexbin (>= 1.27.0), ggplot2 (>= 1.0.1), testthat, covr
+License: MIT + file LICENSE
+MD5sum: 83445396fcda8e37120348484c244f63
+Built: R 4.6.0; ; 2026-05-14 11:12:30 UTC; unix
+File: viridisLite_0.4.3.tgz
+
+Package: withr
+Version: 3.0.3
+Depends: R (>= 3.6.0)
+Imports: graphics, grDevices
+Suggests: callr, DBI, knitr, methods, rlang, rmarkdown (>= 2.12),
+        RSQLite, testthat (>= 3.0.0)
+License: MIT + file LICENSE
+MD5sum: b9d1f008c66332e986372b51ff5ded77
+Built: R 4.6.0; ; 2026-10-12 03:20:22 UTC; unix
+File: withr_3.0.3.tgz
+
+Package: xfun
+Version: 0.61
+Depends: R (>= 3.2.0)
+Imports: grDevices, stats, tools
+Suggests: testit, parallel, codetools, methods, rstudioapi, tinytex (>=
+        0.30), mime, litedown (>= 0.6), commonmark, knitr (>= 1.50),
+        remotes, pak, curl, xml2, jsonlite, magick, yaml, data.table,
+        qs2
+License: MIT + file LICENSE
+MD5sum: 940a2109cb11acf10a942d78e425ee07
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-10-12 03:25:57 UTC;
+        unix
+File: xfun_0.61.tgz
+
+Package: yaml
+Version: 2.3.12
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
+License: BSD_3_clause + file LICENSE
+MD5sum: 91a473f8da540bf8ab9ab563ad3a88be
+Built: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 12:25:44 UTC;
+        unix
+File: yaml_2.3.12.tgz

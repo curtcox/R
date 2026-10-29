@@ -47,3 +47,19 @@ test('R saved-function AST validation and function/demo forms',async()=>{
 test('base help renders through the rich HTML output protocol',async()=>{
  const r=await run('?mean\nhelp("sum")');assert.ok(r.ok,r.error);assert.equal(r.events.filter(e=>e.type==='html').length,2);assert.match(r.events.find(e=>e.type==='html').data,/Arithmetic Mean/);
 });
+
+test('Program input preserves blank lines and each run rewinds the shared connection',async()=>{
+ const r=await run('print(readLines("stdin"))','first\n\nlast\n\n');assert.ok(r.ok,r.error);assert.match(r.text,/"first" ""\s+"last"\s+""/);
+ const again=await run('cat(readline())','again\n');assert.equal(again.text,'again\nagain');
+});
+
+test('scan nmax and nlines retain the same unread input as a base text connection',async()=>{
+ for(const options of ['nmax=1','nlines=1']){
+  const source='expected <- textConnection(c("1 2", "3 4", "last")); base::scan(expected, '+options+', quiet=TRUE); remainder <- base::readLines(expected); close(expected); scan("stdin", '+options+', quiet=TRUE); stopifnot(identical(readLines("stdin"),remainder));cat("preserved")';
+  const r=await run(source,'1 2\n3 4\nlast\n');assert.ok(r.ok,r.error);assert.match(r.text,/preserved/);
+ }
+});
+
+test('plot dimensions, multi-panel pages, and explicit device closure preserve captures',async()=>{
+ const r=await run('options(online.plot.width=4,online.plot.height=3);par(mfrow=c(1,2));plot(1:3);plot(3:1);dev.off()');assert.ok(r.ok,r.error);const figures=r.events.filter(e=>e.type==='figure');assert.equal(figures.length,1);const png=Buffer.from(figures[0].png,'base64');assert.equal(png.readUInt32BE(16),768);assert.equal(png.readUInt32BE(20),576);
+});

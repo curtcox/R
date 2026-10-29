@@ -14,7 +14,7 @@ export async function createNodeCore(emit=()=>{}) {
     async installPackages(names) {
       const directory=new URL('../.webr-cache/',import.meta.url);
       try {
-        const index=await fs.readFile(new URL('PACKAGES',directory));
+        const index=await fs.readFile(new URL('./gallery-packages.dcf',import.meta.url));
         await webR.FS.writeFile('/tmp/online-PACKAGES',index);
         await engine.evaluate(`local({ info<-read.dcf('/tmp/online-PACKAGES'); info<-cbind(info,Repository=${JSON.stringify(directory.href.replace(/\/$/,''))}); rownames(info)<-info[,'Package']; webr::install(c(${names.map(JSON.stringify).join(',')}),info=info) })`);
       } catch(error) {throw Error('Package installation failed: '+error.message);}

@@ -280,9 +280,9 @@ const RExamples = {catalog: [
     ],
     "docs": "docs/graphics.html",
     "description": "Mandelbrot set",
-    "src": "x <- seq(-2,1,length.out=220); y <- seq(-1.3,1.3,length.out=180)\nc <- outer(x, 1i*y, `+`); z <- c*0; count <- matrix(0,length(x),length(y))\nfor (step in 1:45) {\n  active <- Mod(z) <= 2\n  z[active] <- z[active]^2 + c[active]\n  count[active] <- step\n}\nimage(x,y,count,col=hcl.colors(46,\"Inferno\"),asp=1,xlab=\"Real\",ylab=\"Imaginary\")\n",
+    "src": "x <- seq(-2,1,length.out=220); y <- seq(-1.3,1.3,length.out=180)\nc <- outer(x, 1i*y, `+`); z <- c*0; count <- matrix(0,length(x),length(y))\nfor (step in 1:45) {\n  active <- Mod(z) <= 2\n  z[active] <- z[active]^2 + c[active]\n  count[active] <- step\n}\nimage(x,y,count,useRaster=TRUE,col=hcl.colors(46,\"Inferno\"),asp=1,xlab=\"Real\",ylab=\"Imaginary\")\n",
     "stdin": "",
-    "fingerprint": "8153c7f6205bca4332fc3cfa57ca4356b3e5864969be5bdc960d40f2e27d0058"
+    "fingerprint": "a8d4144ce91f7aaccba450707b4047266ed153c25ae5ef95d9d7678e2688ed93"
   },
   {
     "id": "game-of-life",
@@ -294,9 +294,9 @@ const RExamples = {catalog: [
     ],
     "docs": "docs/graphics.html",
     "description": "Game of Life",
-    "src": "set.seed(4); size <- 24; world <- matrix(rbinom(size^2,1,.23),size)\nshift <- function(x,dr,dc) x[(seq_len(size)+dr-1)%%size+1,(seq_len(size)+dc-1)%%size+1]\nfor (generation in 1:4) {\n  image(world,col=c(\"#f3faf7\",\"#167c80\"),axes=FALSE,main=paste(\"Generation\",generation))\n  neighbours <- Reduce(`+`,lapply(1:9,function(k) shift(world,(k-1)%%3-1,(k-1)%/%3-1))) - world\n  world <- (neighbours==3 | (world==1 & neighbours==2))*1\n}\n",
+    "src": "set.seed(4); size <- 24; world <- matrix(rbinom(size^2,1,.23),size)\nshift <- function(x,dr,dc) x[(seq_len(size)+dr-1)%%size+1,(seq_len(size)+dc-1)%%size+1]\nfor (generation in 1:4) {\n  image(world,useRaster=TRUE,col=c(\"#f3faf7\",\"#167c80\"),axes=FALSE,main=paste(\"Generation\",generation))\n  neighbours <- Reduce(`+`,lapply(1:9,function(k) shift(world,(k-1)%%3-1,(k-1)%/%3-1))) - world\n  world <- (neighbours==3 | (world==1 & neighbours==2))*1\n}\n",
     "stdin": "",
-    "fingerprint": "2059a1965793a89e5ba8c2dbc6e4a81a59e59c4dedd813d796103024a06ba81d"
+    "fingerprint": "1fed2b6470f297f3082f8a932b258122ad0bcf3970bf7f2a4733f238fcfe8b5c"
   },
   {
     "id": "fractal-tree",

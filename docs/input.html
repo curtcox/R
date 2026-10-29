@@ -8,7 +8,7 @@ values &lt;- scan(&quot;stdin&quot;, quiet = TRUE)
 mean(values)</code></pre>
 <p><code>readline()</code> consumes and echoes one line. When there are no lines left, it returns an empty string and prints a one-time hint to add input. <code>interactive()</code> returns <code>FALSE</code>.</p>
 <p><code>readLines(&quot;stdin&quot;)</code>, <code>readLines(stdin())</code>, and <code>readLines(file(&quot;stdin&quot;))</code> share the same connection and echo the lines they consume. Use <code>n = 1</code> to read one line. Ordinary files still use R's normal readers.</p>
-<p><code>scan()</code> and <code>scan(&quot;stdin&quot;)</code> read and echo the remaining lines. Use <code>nlines</code> to reserve later lines for another reader. As with non-interactive R scripts, <code>nmax</code> controls parsed values; use <code>nlines</code> when mixing scan and line readers.</p>
+<p><code>scan()</code> and <code>scan(&quot;stdin&quot;)</code> read and echo input using R's normal scanning rules. <code>nmax</code> controls parsed values and <code>nlines</code> controls lines. Unread input is retained for subsequent readers, including partial lines left by a limited scan.</p>
 <pre><code class="language-r">first &lt;- scan(&quot;stdin&quot;, nlines = 1, quiet = TRUE)
 next_answer &lt;- readline(&quot;Next answer: &quot;)</code></pre>
 <p><code>file(&quot;stdin&quot;)</code> and <code>stdin()</code> return the same text connection for the run. Namespaced calls such as <code>base::readline()</code> bypass the input helpers; use the unqualified functions above. Connections created for other files behave normally.</p>

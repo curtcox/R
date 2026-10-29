@@ -470,3 +470,29 @@ Phase 10 still needs the user's registered public HashBin client ID. The meta ta
 is intentionally empty and loading/compressed sharing remain functional. No
 HashBin credentials or paid sample saves were used. Deployment success and the
 three-browser CI result must be checked after the push before final handoff.
+
+### Follow-up hardening and production check
+
+- The first Pages deployment succeeded, and a production Chromium smoke test
+  passed the default plot, R-side origin `null`, input echo and offline reload
+  against the actual pinned CDN.
+- Linux CI passed Chromium and Firefox, including all 32 gallery URLs. WebKit's
+  initial CI failure was a redirect-test race: it could read the old document's
+  saved status. The test now waits for the new document before assertions; local
+  WebKit passes the corrected flow.
+- Added exact blank-line preservation, scan nmax/nlines unread-input tests,
+  multi-panel/explicit-device-close capture, and dimension checks. Warnings and
+  errors use stderr. There are now 37 passing Node tests and current asset/docs
+  checks.
+- Verified 256t content is shared across worker replacement within a page; browser
+  tests assert a remote document is fetched once across Stop. Offline package
+  tests install/run jsonlite with the network disabled.
+- Package pins cover only selected archives. A 13 KB gallery-only DCF index ships
+  with the app as an offline fallback; unrelated updates in the full upstream
+  PACKAGES index do not invalidate CI. Arbitrary online packages use the live
+  index. `npm run gallery` refreshes upstream package bytes; `--cached` supports
+  deliberate local regeneration using existing bytes.
+- Mandelbrot's preview shrank from 8.6 MB to about 40 KB by using R's raster-backed
+  SVG image support. All gallery previews total about 708 KB. Added keyboard tabs,
+  40-pixel labeled plot controls, visible mobile update controls and stronger hint
+  contrast. The final push and CI/deploy verification follow these changes.
