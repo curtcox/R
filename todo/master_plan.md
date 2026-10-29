@@ -496,3 +496,10 @@ three-browser CI result must be checked after the push before final handoff.
   SVG image support. All gallery previews total about 708 KB. Added keyboard tabs,
   40-pixel labeled plot controls, visible mobile update controls and stronger hint
   contrast. The final push and CI/deploy verification follow these changes.
+
+The final CI run exposed an offline-navigation failure in Firefox after the new
+256t mock enabled Playwright request interception. The 256t fixture now comes
+from the local HTTP mirror with a server-side request counter, preserving the
+once-per-page assertion without intercepting the main browser context. Chromium
+passes that revised test setup. Browser errors now log their page URL immediately
+so any remaining platform-specific failures are easier to diagnose.
