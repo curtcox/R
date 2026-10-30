@@ -108,6 +108,82 @@ const RExamples = {catalog: [
     "fingerprint": "6f939d6389be7f7a339191fd24cabf3a054a7f4ebb5a3fac0400aa336a4bc2a6"
   },
   {
+    "id": "text-file",
+    "label": "Read a plain-text file",
+    "title": "Read a plain-text file",
+    "tags": [
+      "input",
+      "data",
+      "files"
+    ],
+    "docs": "docs/input.html",
+    "description": "Read lines from a .txt file, skip comments and blanks, and measure each note.",
+    "src": "# Edit Program input to change this plain-text file.\n# Files live in R's browser filesystem, separate from your computer's files.\npath <- tempfile(fileext = \".txt\")\nwriteLines(readLines(\"stdin\"), path)\n\nlines <- readLines(path, warn = FALSE)\nunlink(path)\nnotes <- trimws(lines)\nnotes <- notes[nzchar(notes) & !startsWith(notes, \"#\")]\nprint(data.frame(note = notes, characters = nchar(notes)))\ncat(\"Notes:\", length(notes), \"\\n\")\n",
+    "stdin": "# Field notes\n  Check the rain gauge  \n\nRecord the temperature\nCheck the rain gauge\n",
+    "fingerprint": "77046203f068d099a20c18addf0b6d60f004eee66aa8f80353c5ac6933a56290"
+  },
+  {
+    "id": "csv-file",
+    "label": "Read a CSV file",
+    "title": "Read a CSV file",
+    "tags": [
+      "input",
+      "data",
+      "files"
+    ],
+    "docs": "docs/input.html",
+    "description": "Read comma-separated scores with quoted commas and missing values; summarise by team.",
+    "src": "# Copy editable Program input into a CSV file in R's browser filesystem.\npath <- tempfile(fileext = \".csv\")\nwriteLines(readLines(\"stdin\"), path)\n\n# Quoted fields can contain commas; empty scores become missing values.\nscores <- read.csv(path, na.strings = \"\", stringsAsFactors = FALSE)\nunlink(path)\nprint(scores)\ncat(\"Mean score by team (missing scores omitted):\\n\")\naggregate(score ~ team, data = scores, FUN = mean)\n",
+    "stdin": "name,team,score\n\"Lovelace, Ada\",Blue,98\n\"Hopper, Grace\",Gold,99\n\"Johnson, Katherine\",Blue,100\n\"Vaughan, Dorothy\",Gold,\n",
+    "fingerprint": "6dc1332990b5f168c8c9056ff437cf7dad906f7ec2b45745db80f140f5323fd1"
+  },
+  {
+    "id": "json-file",
+    "label": "Read a JSON file",
+    "title": "Read a JSON file",
+    "tags": [
+      "input",
+      "data",
+      "files",
+      "packages"
+    ],
+    "docs": "docs/input.html",
+    "description": "Read nested JSON metadata and measurement records with jsonlite; handle null values.",
+    "src": "library(jsonlite)\n# Copy editable Program input into a JSON file in R's browser filesystem.\npath <- tempfile(fileext = \".json\")\nwriteLines(readLines(\"stdin\"), path)\n\n# Read a nested object: metadata plus an array of measurement records.\nreport <- fromJSON(path)\nunlink(path)\ncat(\"Station:\", report$station, \"\\n\")\nprint(report$readings)\ncat(\"Mean temperature:\", mean(report$readings$temperature, na.rm = TRUE),\n    report$unit, \"\\n\")\n",
+    "stdin": "{\n  \"station\": \"Lakeside\", \"unit\": \"C\",\n  \"readings\": [\n    {\"hour\": \"09:00\", \"temperature\": 12},\n    {\"hour\": \"12:00\", \"temperature\": 18},\n    {\"hour\": \"15:00\", \"temperature\": null}\n  ]\n}\n",
+    "fingerprint": "85930cc3b0dea09bf10839b1eda202098f1058bf75e4935ccf0099253259fa88"
+  },
+  {
+    "id": "tsv-file",
+    "label": "Read a TSV file",
+    "title": "Read a TSV file",
+    "tags": [
+      "input",
+      "data",
+      "files"
+    ],
+    "docs": "docs/input.html",
+    "description": "Read tab-separated rainfall data, parse dates, and total rainfall by city.",
+    "src": "# Program input contains real tab characters between columns.\npath <- tempfile(fileext = \".tsv\")\nwriteLines(readLines(\"stdin\"), path)\n\n# read.delim reads tab-separated files; NA marks a missing measurement.\nrain <- read.delim(path, na.strings = \"NA\", stringsAsFactors = FALSE)\nunlink(path)\nrain$date <- as.Date(rain$date)\nprint(rain)\ncat(\"Total rainfall by city (mm):\\n\")\naggregate(rain_mm ~ city, data = rain, FUN = sum)\n",
+    "stdin": "city\tdate\train_mm\nChicago\t2026-10-01\t12\nOslo\t2026-10-01\t8\nChicago\t2026-10-02\t3\nOslo\t2026-10-02\tNA\n",
+    "fingerprint": "7e2c98d031a24e889a04379d1aa5adb67328afcca9c901b13740023556e92c4c"
+  },
+  {
+    "id": "fixed-width-file",
+    "label": "Read a fixed-width file",
+    "title": "Read a fixed-width file",
+    "tags": [
+      "input",
+      "data",
+      "files"
+    ],
+    "docs": "docs/input.html",
+    "description": "Read records by column width with read.fwf and find the wettest city.",
+    "src": "# Fields occupy fixed columns: city (10), year (4), rainfall (5).\n# Preserve the spaces when editing Program input.\npath <- tempfile(fileext = \".txt\")\nwriteLines(readLines(\"stdin\"), path)\n\nrain <- read.fwf(path, widths = c(10, 4, 5), strip.white = TRUE,\n                 col.names = c(\"city\", \"year\", \"rain_mm\"),\n                 colClasses = c(\"character\", \"integer\", \"numeric\"))\nunlink(path)\nprint(rain)\ncat(\"Wettest city:\", rain$city[which.max(rain$rain_mm)], \"\\n\")\n",
+    "stdin": "Chicago   2025  125\nOslo      2025   98\nLima      2025   12\n",
+    "fingerprint": "700bb3133a645489c45ef022ffb8cd2d11902e89e1957d43d4a9dec58698c5fb"
+  },
+  {
     "id": "data-frames",
     "label": "Meet the cars",
     "title": "Meet the cars",

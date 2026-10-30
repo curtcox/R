@@ -269,7 +269,7 @@ Python Online's model, re-checked for R:
   may repeat side effects. The README says so, as Python Online's does.
 - Service worker scope and `ronline-` cache prefix. It serves only bytes matching pinned hashes.
 
-## Gallery (~30 samples)
+## Gallery (37 samples)
 
 `gallery.html` + `src/gallery.js` + `src/gallery.css` from Python Online: search box, tag filter, cards with
 generated SVG previews, and *Open in editor* links (`?example=<id>`). Samples live in `examples/*.R` and in
@@ -278,7 +278,7 @@ generated SVG previews, and *Open in editor* links (`?example=<id>`). Samples li
 | Topic | Samples |
 |---|---|
 | Basics | welcome, fizzbuzz, vectors (vectorised arithmetic, `seq`, recycling), functions & recursion (Tower of Hanoi), closures & the apply family (`sapply`, `Map`, `Reduce`), strings & regex (`sprintf`, `gsub`, `regmatches`) |
-| Input | input-numbers (`readline` + `as.numeric`), word-count (`readLines("stdin")` + `table`) |
+| Input | input-numbers (`readline` + `as.numeric`), word-count (`readLines("stdin")` + `table`), plain-text files (`readLines`), CSV (`read.csv`), JSON (`jsonlite::fromJSON`), TSV (`read.delim`), fixed-width records (`read.fwf`) |
 | Data | data frames (`mtcars`, `aggregate`, `summary`), `penguins` (new in R 4.5) with dplyr, tidyr reshaping, jsonlite, factors & tables |
 | Statistics | linear model (`lm`, `summary`, residual plot), t-test & distributions, simulation (central limit theorem) |
 | Graphics | histogram, scatter + regression line, ggplot2 faceting, colour wheel (`hcl.colors`), Mandelbrot (`image`), Game of Life (`image` frames), fractal tree (`segments`), spirals & waves (`curve`, `matplot`) |
@@ -503,3 +503,19 @@ from the local HTTP mirror with a server-side request counter, preserving the
 once-per-page assertion without intercepting the main browser context. Chromium
 passes that revised test setup. Browser errors now log their page URL immediately
 so any remaining platform-specific failures are easier to diagnose.
+
+### Gallery file-reading examples — 2026-10-30
+
+- Expanded the gallery from 32 to 37 samples with plain-text, CSV, JSON, TSV, and
+  fixed-width file readers. Each copies editable Program input into a temporary
+  file in R's virtual filesystem, reads it with the format's normal reader, and
+  removes the file. This keeps samples self-contained and usable offline, using
+  the existing jsonlite package pin for JSON.
+- Examples cover text comments/blank lines, quoted CSV fields and missing values,
+  nested JSON records, tab-separated dates, and fixed column widths. Input docs
+  explain the virtual filesystem and link to each sample.
+- Validation: all 37 gallery sources executed under pinned webR; all 37 Node
+  tests, asset/docs checks, and Chromium/WebKit full-gallery suites passed.
+  Previews used `npm run gallery -- --cached` because the upstream package host
+  was unreachable; `npm run packages -- --verify` confirmed the existing pins.
+  Regenerated docs and offline hashes and visually checked the five new cards.

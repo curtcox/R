@@ -33,6 +33,19 @@ next_answer <- readline("Next answer: ")
 Namespaced calls such as `base::readline()` bypass the input helpers; use the
 unqualified functions above. Connections created for other files behave normally.
 
+The gallery includes [plain text](../?example=text-file),
+[CSV](../?example=csv-file), [JSON](../?example=json-file),
+[TSV](../?example=tsv-file), and [fixed-width](../?example=fixed-width-file)
+file-reading examples. Each copies editable Program input into a temporary file,
+then reads that file with `readLines()`, `read.csv()`, `jsonlite::fromJSON()`,
+`read.delim()`, or `read.fwf()`. CSV examples handle quoted commas and missing
+values; JSON includes nested metadata and records. TSV uses actual tab characters,
+and fixed-width data needs its column spacing preserved.
+
+These files live in R's browser filesystem. A path in an example refers to that
+filesystem, not a file on your computer. The samples need no upload or external
+data download, and each run recreates its file from Program input.
+
 Auto-run may run a program again while you edit it. Network requests or other
 side effects may repeat. Disable Auto-run while preparing a program with such
 side effects, then use Run.
