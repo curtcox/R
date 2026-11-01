@@ -519,3 +519,5 @@ so any remaining platform-specific failures are easier to diagnose.
   Previews used `npm run gallery -- --cached` because the upstream package host
   was unreachable; `npm run packages -- --verify` confirmed the existing pins.
   Regenerated docs and offline hashes and visually checked the five new cards.
+
+URL identity fix (2026-11-01): linked source, input and Auto-run take precedence over browser drafts. Local recovery is explicit and previous drafts are retained.

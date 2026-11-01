@@ -27,7 +27,7 @@ The plan is todo/master_plan.md; update its implementation record when decisions
   over each run; unqualified readers consume/echo it. Installed packages persist
   until worker replacement. scan nmax/nlines preserve unread input for subsequent readers.
 - Share source + stdin + autorun together. Storage keys use ronline:. Incoming
-  links must confirm before replacing different stored work. Envelope type is r,
+  links load independently of stored work; preserve drafts for explicit recovery. Envelope type is r,
   with r:{stdin,autorun}; document limit is 5 MiB. The public inspection surface is
   ROnline. Save uses SDK publish synchronously from a click, never OAuth tokens.
 - hashbin-client-id is intentionally empty. Register R Online with return URL
@@ -67,3 +67,7 @@ The plan is todo/master_plan.md; update its implementation record when decisions
    root after a main push with no build step. Do not commit node_modules or caches.
    Check workflow/live page before claiming deployment. HashBin registration is
    a user setup step. Do not invent a client ID or spend the user's HashBin balance.
+
+## URL identity and draft recovery
+
+Explicit program, source, example and CID URLs always load their document, independent of browser drafts. Never gate URL loading on a replacement confirmation. The bare homepage opens the default document. Preserve local drafts separately with LocalDrafts and offer Resume saved work. Opening or running a URL must not overwrite saved work; edits retain the previous draft for recovery. Keep stale-load guards and execution isolation.

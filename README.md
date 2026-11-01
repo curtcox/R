@@ -120,3 +120,7 @@ Retained notices: `LICENSE-graphvizonline`, `LICENSE-svg-pan-zoom`, `ace/LICENSE
 The synchronous 256t bridge uses MIT js-sha512 0.9.0 with its license retained;
 Node/WebCrypto vectors test its CID results. The R runtime and t256 helpers are
 original code.
+
+### URLs and saved work
+
+Program URLs always open the linked document, regardless of browser history or local drafts. The homepage opens the default example. Use **Resume saved work** in the editor controls to recover local drafts. Viewing or running a link keeps saved work; editing it retains the previous draft for recovery.

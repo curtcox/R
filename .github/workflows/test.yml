@@ -32,6 +32,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: URL identity and draft recovery
+        run: node tests/browser/url-state.cjs
+        env:
+          BROWSER: ${{ matrix.browser }}
       - name: Fetch and verify pinned gallery packages
         run: npm run packages -- --verify
       - name: Browser and full gallery

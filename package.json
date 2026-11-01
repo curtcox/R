@@ -12,7 +12,8 @@
     "packages": "node scripts/pin-packages.mjs",
     "docs": "node scripts/render-docs.mjs",
     "offline": "node scripts/update-offline.mjs",
-    "serve": "node tests/browser/server.cjs"
+    "serve": "node tests/browser/server.cjs",
+    "test:urls": "node tests/browser/url-state.cjs"
   },
   "devDependencies": {
     "ace-builds": "1.4.1",

@@ -3,6 +3,7 @@
 const $ = id => document.getElementById(id), status = text => { $('status').textContent = text; };
 const storage = kind => { try { return window[kind]; } catch (_) { return undefined; } };
 const local = storage('localStorage'), session = storage('sessionStorage');
+const drafts = new LocalDrafts({ storage: local, key: 'ronline:work' });
 const editor = ace.edit('editor');
 editor.setTheme('ace/theme/chrome'); editor.session.setMode('ace/mode/r');
 editor.setOptions({ enableBasicAutocompletion: true, enableLiveAutocompletion: true, showPrintMargin: false, tabSize: 4, useSoftTabs: true, fontSize: 14 });
@@ -13,7 +14,7 @@ const output = new OutputView($('output'), line => { selectTab('code'); editor.g
 let marker, applying = false, saved, clock, start, runSuppressed = false;
 function snapshot() { return { src: editor.getValue(), r: { stdin: $('stdin').value, autorun: $('autorun').checked } }; }
 function fingerprint() { return JSON.stringify(snapshot()); }
-function persist() { try { local?.setItem('ronline:work', fingerprint()); } catch (_) { /* Private mode or quota. */ } }
+function persist(edit = false) { drafts.attempt(snapshot(), edit === true); }
 function inputCount() {
   const count = $('stdin').value ? $('stdin').value.replace(/\n$/, '').split('\n').length : 0;
   $('input-count').textContent = count + (count === 1 ? ' line' : ' lines'); $('mobile-input-count').textContent = count || '';
@@ -21,13 +22,7 @@ function inputCount() {
 function apply(value) {
   applying = true;
   editor.setValue(value.src || '', -1); $('stdin').value = value.r?.stdin || '';
-  $('autorun').checked = value.r?.autorun !== false; inputCount(); applying = false; persist();
-}
-// Links can come from anyone; never let one silently replace work kept in this browser.
-function acceptLink(incoming) {
-  const same = (src, stdin) => src === editor.getValue() && (stdin || '') === $('stdin').value;
-  if (same(incoming.src, incoming.r?.stdin) || RExamples.catalog.some(sample => same(sample.src, sample.stdin))) return true;
-  return confirm('This link opens a different program. Replace the program saved in this browser?\n\nChoose Cancel to keep your current work.');
+  $('autorun').checked = value.r?.autorun !== false; inputCount(); applying = false; drafts.opened();
 }
 function clearAnnotation() {
   editor.session.clearAnnotations();
@@ -111,14 +106,14 @@ $('download-text').onclick = () => RExport.download(output.text, 'output.txt');
 $('download-svg').onclick = () => RExport.download(output.current.svg, 'drawing.svg', 'image/svg+xml');
 $('download-png').onclick = async () => { try { const item = output.current; const blob = item.png ? RExport.binary64(item.png, 'image/png') : item.svg ? await RExport.svgPNG(item.svg) : item.blob; RExport.download(blob, blob.type === 'image/jpeg' ? 'image.jpeg' : 'image.png'); } catch (error) { $('download-status').textContent = 'Image download failed: ' + error.message; } };
 const store = new HashBinStore({ clientId: document.querySelector('meta[name="hashbin-client-id"]').content, redirectUri: new URL('./', location.href).href, storage: session, transactionStorage: session });
-let linkLoad = false;
 const panel = new HashBinPanel({ store, getSnapshot: snapshot, getFingerprint: fingerprint,
-  onLoad(value, cid) { if (linkLoad && !acceptLink(value)) { history.replaceState(null, '', links().fallback); return false; } apply(value); saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, cid) }; history.replaceState(null, '', saved.link); if ($('autorun').checked && !runSuppressed) run('auto'); else status('Ready — press Run (Ctrl+Enter)'); },
+  onError(error) { state('error'); status(error.message); },
+  onLoad(value, cid) { scheduler.cancel(); if (client.busy) client.stop(); output.clear(); clearAnnotation(); state('idle'); apply(value); saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, cid) }; history.replaceState(null, '', saved.link); if ($('autorun').checked && !runSuppressed) run('auto'); else status('Ready — press Run (Ctrl+Enter)'); },
   onSaved(cid, value, link) { saved = { fingerprint: value, link }; history.replaceState(null, '', link); $('hashbin-cid').value = cid; }
 });
 function edited() {
   if (applying) return;
-  panel.cancelLoad(); persist(); inputCount(); clearAnnotation();
+  panel.cancelLoad(); persist(true); inputCount(); clearAnnotation();
   if (saved) { saved = null; history.replaceState(null, '', links().fallback); }
   if ($('share-dialog').open) updateShare();
   scheduler.cancel(); if ($('autorun').checked) scheduler.schedule({ detect: false });
@@ -127,6 +122,7 @@ editor.session.on('change', edited); $('stdin').oninput = edited;
 $('autorun').onchange = () => { edited(); if ($('autorun').checked) run('auto'); };
 window.addEventListener('offline-before-reload', persist);
 window.addEventListener('beforeunload', persist);
+drafts.mount($('more'), value => { panel.cancelLoad(); scheduler.cancel(); client.stop(); output.clear(); clearAnnotation(); saved = null; apply(value); history.replaceState(null, '', links().fallback); selectTab('code'); status('Saved work restored — press Run.'); });
 $('offline-packages').onclick = async () => {
   if (!navigator.serviceWorker?.controller) { $('package-status').textContent = 'Wait for offline setup, then retry.'; return; }
   $('offline-packages').disabled = true; $('package-status').textContent = 'Preparing package list…';
@@ -134,35 +130,36 @@ $('offline-packages').onclick = async () => {
   channel.port1.onmessage = ({data}) => { $('package-status').textContent = data.text; if (data.done) { clearTimeout(timeout); $('offline-packages').disabled = false; channel.port1.close(); } };
   navigator.serviceWorker.controller.postMessage({ type: 'cache-packages' }, [channel.port2]);
 };
-let initial = { src: RExamples.catalog[0].src, r: { stdin: RExamples.catalog[0].stdin, autorun: true } };
-try { const restored = JSON.parse(local?.getItem('ronline:work') || 'null'); if (restored && typeof restored.src === 'string') initial = restored; } catch (_) { /* Fresh document. */ }
-apply(initial);
-try {
-  const parsed = ShareLinks.parse(location.href, LZString.decompressFromEncodedURIComponent);
-  runSuppressed = new URL(location.href).searchParams.get('run') === '0';
-  store.retireLegacyTokens().catch(() => { /* Retried on the next load. */ });
-  if (parsed?.kind === 'publish') {
-    const published = await store.published(location.hash);
-    if (published.snapshot) apply(published.snapshot);
-    if (published.cid) { saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, published.cid) }; $('hashbin-cid').value = published.cid; }
-    history.replaceState(null, '', saved ? saved.link : links().fallback);
-    $('hashbin-status').textContent = published.error || 'Saved to HashBin.';
-  }
-  else if (parsed?.kind === 'source') { if (acceptLink(parsed)) apply(parsed); else history.replaceState(null, '', links().fallback); }
-  else if (parsed?.kind === 'example') { const sample = RExamples.catalog.find(value => value.id === parsed.id); if (!sample) throw Error('Sample not found. Open the Sample gallery to choose a program.'); const value = { src: sample.src, r: { stdin: sample.stdin, autorun: true } }; if (acceptLink(value)) apply(value); else history.replaceState(null, '', links().fallback); }
-  if (parsed?.kind === 'cid') { $('hashbin-cid').value = parsed.cid; linkLoad = true; await panel.load(parsed.cid); linkLoad = false; }
-  else if ($('autorun').checked && !runSuppressed) run('auto');
-  else status('Ready — press Run (Ctrl+Enter)');
-} catch (error) { state('error'); status(error.message); }
-// Pasting a saved fragment into the current tab is a same-document navigation.
-window.addEventListener('hashchange', async () => {
+async function openURL() {
+  panel.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
+  output.clear(); clearAnnotation();
+  // Start blank until the URL is resolved. Failed links must not display a local draft.
+  apply({ src: '', r: { stdin: '', autorun: false } }); state('idle');
   try {
     const parsed = ShareLinks.parse(location.href, LZString.decompressFromEncodedURIComponent);
-    runSuppressed = parsed?.run === false;
-    if (parsed?.kind === 'cid') { $('hashbin-cid').value = parsed.cid; linkLoad = true; await panel.load(parsed.cid); linkLoad = false; }
-    else if (parsed?.kind === 'source') { if (!acceptLink(parsed)) { history.replaceState(null, '', links().fallback); return; } panel.cancelLoad(); saved = null; apply(parsed); if ($('autorun').checked && !runSuppressed) run('auto'); }
-  } catch (error) { status(error.message); state('error'); }
-});
+    runSuppressed = new URL(location.href).searchParams.get('run') === '0';
+    if (parsed?.kind === 'publish') {
+      const published = await store.published(location.hash);
+      if (published.snapshot) apply(published.snapshot);
+      if (published.cid) { saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, published.cid) }; $('hashbin-cid').value = published.cid; }
+      history.replaceState(null, '', saved ? saved.link : links().fallback);
+      $('hashbin-status').textContent = published.error || 'Saved to HashBin.';
+    }
+    else if (parsed?.kind === 'source') apply(parsed);
+    else if (parsed?.kind === 'example' || !parsed) {
+      const sample = parsed ? RExamples.catalog.find(value => value.id === parsed.id) : RExamples.catalog[0];
+      if (!sample) throw Error('Sample not found. Open the Sample gallery to choose a program.');
+      apply({ src: sample.src, r: { stdin: sample.stdin, autorun: true } });
+    }
+    if (parsed?.kind === 'cid') { $('hashbin-cid').value = parsed.cid; await panel.load(parsed.cid); }
+    else if ($('autorun').checked && !runSuppressed) run('auto');
+    else status('Ready — press Run (Ctrl+Enter)');
+  } catch (error) { state('error'); status(error.message); }
+}
+store.retireLegacyTokens().catch(() => { /* Retried on the next load. */ });
+// Pasting a saved fragment into the current tab uses the same URL resolution as startup.
+window.addEventListener('hashchange', openURL);
+await openURL();
 // A small public inspection surface is useful for accessibility tools and integration tests.
 globalThis.ROnline = { editor, client, output, snapshot, run, selectTab };
 })();

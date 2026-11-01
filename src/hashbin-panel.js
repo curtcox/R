@@ -1,7 +1,7 @@
 /** HashBin controls: snapshot saves approved on hashbin.org, and stale-load guards. */
 class HashBinPanel {
-  constructor({ store, getSnapshot, getFingerprint, onLoad, onSaved }) {
-    Object.assign(this, { store, getSnapshot, getFingerprint, onLoad, onSaved });
+  constructor({ store, getSnapshot, getFingerprint, onLoad, onSaved, onError = () => {} }) {
+    Object.assign(this, { store, getSnapshot, getFingerprint, onLoad, onSaved, onError });
     this.revision = 0;
     this.status = document.getElementById('hashbin-status');
     this.dialog = document.getElementById('hashbin-dialog');
@@ -28,7 +28,7 @@ class HashBinPanel {
       if (revision !== this.revision) return;
       if (this.onLoad(snapshot, cid) === false) { this.status.textContent = 'Load cancelled. Current source kept.'; return; }
       this.status.textContent = 'Loaded from HashBin.';
-    } catch (error) { if (revision === this.revision) this.status.textContent = error.message; }
+    } catch (error) { if (revision === this.revision) { this.status.textContent = error.message; this.onError(error); } }
   }
   async openSave() {
     if (this.saving) return;
