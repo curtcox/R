@@ -1,7 +1,7 @@
 # R Online
 
 Static GitHub Pages R editor at https://curtcox.github.io/R/. No build step or
-server-side execution. Work directly on main and use the existing deploy workflow.
+server-side execution. Keep the Fragment Kit migration on its own branch and PR; use the shared gated deploy workflow.
 The plan is todo/master_plan.md; update its implementation record when decisions change.
 
 ## Contracts
@@ -63,11 +63,27 @@ The plan is todo/master_plan.md; update its implementation record when decisions
    chromium/firefox/webkit; FULL_GALLERY=1 executes every gallery URL. Browser CI
    runs all three independently from deployment. Do not claim Firefox passed when
    its local build fails before opening a page; verify the Linux CI result.
-6. Keep .github/workflows/deploy.yml unchanged from Python Online. It uploads the
-   root after a main push with no build step. Do not commit node_modules or caches.
+6. The reusable Pages workflow uploads the root with no build step after the shared unit/contracts and actual-engine suites pass. Do not commit node_modules or caches.
    Check workflow/live page before claiming deployment. HashBin registration is
    a user setup step. Do not invent a client ID or spend the user's HashBin balance.
 
 ## URL identity and draft recovery
 
 Explicit program, source, example and CID URLs always load their document, independent of browser drafts. Never gate URL loading on a replacement confirmation. The bare homepage opens the default document. Preserve local drafts separately with LocalDrafts and offer Resume saved work. Opening or running a URL must not overwrite saved work; edits retain the previous draft for recovery. Keep stale-load guards and execution isolation.
+
+## Fragment Kit
+
+Shared contracts: `vendor/fragment-kit-v0.3.1/docs/contracts.md`. The JSON app config
+is `fragment-kit.config.json`; keep its HashBin ID empty until supplied. The kit
+uses SDK v0.4.0 only for Publish. Keep the independent byte-pinned v0.3.0 execution
+SDK and cache verifier for webR isolation and first-fetch integrity. Do not alter
+any vendored bytes. Preserve `ronline:work`, `ronline-` caches, and spike caches.
+Optional packages use `ronline-packages-v1` and are excluded from app-readiness.
+`src/offline-extras.js` owns package fetching/messages and synthetic manifest
+responses. The shared worker owns verified atomic app install and repair.
+Keep the legacy URL writer until all consumers have shipped v1 readers. Schema
+validation, t256, execution isolation and output sanitization stay app-owned.
+Use `npm run gallery:r -- --cached` to execute webR and update original SVGs;
+then serve the app and run `npm run gallery` for shared fingerprinted PNG covers.
+`node scripts/render-gallery.mjs --check` is browser-free. Regenerate offline
+hashes after shipped-file changes. Shared contracts use `testing-contract.config.mjs`.

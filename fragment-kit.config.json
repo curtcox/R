@@ -1,0 +1,12 @@
+{
+  "slug": "r",
+  "name": "R Online",
+  "storagePrefix": "ronline",
+  "canonicalOrigin": "https://r.hashbin.page/",
+  "recoveryOrigin": "https://curtcox.github.io/R/",
+  "repo": "curtcox/R",
+  "docs": "https://curtcox.github.io/R/docs/",
+  "gallery": "https://curtcox.github.io/R/gallery.html",
+  "documentType": "r",
+  "sandboxBootstrapHash": "sha256-IMEqdP+AkCKdxhM3X7mQM4pV/chykJXPvdtndD+XeH8="
+}
