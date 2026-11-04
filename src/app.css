@@ -16,3 +16,4 @@
 @media(prefers-color-scheme:dark){:root{--fk-accent:#7dd1d4;--fk-surface:#152529;--fk-panel:#20343b;--fk-text:#e5eff1;--fk-border:#42606a;--fk-muted:#a9c3cc}body,.toolbar,.pane-heading,#code-pane,#output-pane,footer,button,input,select,textarea,dialog,#stdin,summary{color:var(--fk-text);background:var(--fk-panel)}}
 .traceback-link{min-height:44px;display:inline-flex;align-items:center}
 @media(prefers-color-scheme:dark){.console,.pane-heading{color:var(--fk-text)}.run-status{color:var(--fk-muted)}.stderr{color:#ff9a9f}}
+.toolbar>.check{min-height:44px}

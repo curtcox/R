@@ -38,7 +38,7 @@
     "https://repo.r-wasm.org/bin/emscripten/contrib/4.6/yaml_2.3.12.tgz": "027e4bd87fcd16d0ba744dd41c51e2eb711c07d873f6050e65c8daf454d74f13"
   },
   "prefix": "ronline",
-  "version": "ronline-2ce378e3053a0746",
+  "version": "ronline-2415279e06f76962",
   "assets": [
     "LICENSE-graphvizonline",
     "LICENSE-svg-pan-zoom",
@@ -503,7 +503,7 @@
     "index.html": "8d115f308408fd6d4f6c0e45e0157f1f44e5f037fe54cd3e257e8e048fc4378b",
     "manifest.webmanifest": "015254b512bf13b0df86e4fc31054cefd78645650f9bb4b6d0c6f6b97d934783",
     "service-worker.js": "1670a30ce7825fd8e3be025acae24221654feac8d735b37289291ef17a89a503",
-    "src/app.css": "3618dc1115aeb0275b9f218f99588eef841f42c1a24d69b3017499e7ea519b58",
+    "src/app.css": "57a2e65eacb4548c3de6de11651c20228dfc93479f210b2c55fe19df6b37c4df",
     "src/app.js": "15ab2e2b79718f7a797438a763837265a1133dac22bf64620c03e7999f7229ba",
     "src/docs.css": "ff5bfa82630fcf392717db29cbaf49a9b2583b79f23415e7cf973b883b9efe95",
     "src/examples.js": "5ce72160a44d36a05cef3d899f5ae6105f526ef2d376c62c17a8a309bbd8812c",
