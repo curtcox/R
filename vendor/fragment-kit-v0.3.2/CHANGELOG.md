@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 — 2026-11-04
+
+* Match offline repair's polling deadline to the bounded 60-second acceptance
+  window for large, verified consumer precaches on CI runners.
+
 ## 0.3.1 — 2026-11-04
 
 * Contract tests scope QR actions to their dialog and allow large consumer

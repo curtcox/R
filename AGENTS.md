@@ -73,7 +73,7 @@ Explicit program, source, example and CID URLs always load their document, indep
 
 ## Fragment Kit
 
-Shared contracts: `vendor/fragment-kit-v0.3.1/docs/contracts.md`. The JSON app config
+Shared contracts: `vendor/fragment-kit-v0.3.2/docs/contracts.md`. The JSON app config
 is `fragment-kit.config.json`; keep its HashBin ID empty until supplied. The kit
 uses SDK v0.4.0 only for Publish. Keep the independent byte-pinned v0.3.0 execution
 SDK and cache verifier for webR isolation and first-fetch integrity. Do not alter
