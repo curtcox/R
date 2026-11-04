@@ -29,7 +29,7 @@ function createServer(){
   let data=served(file,url);
   if(path.basename(file)==='index.html'&&req.headers.cookie?.includes('ronline-test-client=1'))data=Buffer.from(data.toString().replace('name="hashbin-client-id" content=""','name="hashbin-client-id" content="test-client"'));
   if(path.basename(file)==='offline-assets.js'){
-   const manifest=require('../../offline-assets.js');const convert=asset=>asset.replace(CDN,base+'/__webr__/').replace(REPO,base+'/__packages__/');
+   delete require.cache[require.resolve('../../offline-assets.js')];const manifest=require('../../offline-assets.js');const convert=asset=>asset.replace(CDN,base+'/__webr__/').replace(REPO,base+'/__packages__/');
    const hashes={};
    for(const [asset,hash]of Object.entries(manifest.hashes)){
     const replacement=convert(asset);hashes[replacement]=/^https:/.test(asset)?hash:sha(served(path.join(root,asset)));

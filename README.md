@@ -124,3 +124,12 @@ original code.
 ### URLs and saved work
 
 Program URLs always open the linked document, regardless of browser history or local drafts. The homepage opens the default example. Use **Resume saved work** in the editor controls to recover local drafts. Viewing or running a link keeps saved work; editing it retains the previous draft for recovery.
+
+## Fragment Kit migration
+
+Shared URL, HashBin Publish, QR camera/image loading, drafts, scheduling, dialogs,
+mobile tabs, gallery and offline tools use the immutable Fragment Kit v0.3.2 pin.
+R owns its schema, legacy writer, webR sandbox, t256 bridge, output display and
+optional-package cache. Existing local work and cache prefixes are preserved.
+The independent execution SDK remains v0.3.0; Publish uses the kit's v0.4.0 SDK.
+See `docs/fragment-kit-migration.md` for acceptance and deployment state.

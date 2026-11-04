@@ -1,8 +1,18 @@
+import {LocalDrafts,RenderScheduler,HashBinPanel,createShell,mountMobileTabs,createShareDialog,createQrDialog} from '../vendor/fragment-kit-v0.3.2/src/index.js';
+import {config,type,urlState,HashBinDocuments,HashBinStore,LZString,loadExecutionSDK} from './fragment-config.mjs';
+Object.assign(globalThis,{HashBinDocuments,LZString}); // t256 verification and established URL inspection surface.
 /* Editor orchestration. R and all package execution stay in the worker. */
 (async () => {
-const $ = id => document.getElementById(id), status = text => { $('status').textContent = text; };
+let navigationError=null;
+const $ = id => document.getElementById(id), status = text => { $('status').textContent = navigationError??text; };
 const storage = kind => { try { return window[kind]; } catch (_) { return undefined; } };
 const local = storage('localStorage'), session = storage('sessionStorage');
+let navigationRevision=0,qrSave=false;
+const oldHeader=document.querySelector('header'),brand=oldHeader.querySelector('.brand');oldHeader.remove();
+const shell=createShell({config});shell.header.querySelector('.fk-brand').replaceChildren(...brand.childNodes);shell.header.querySelector('.fk-brand').href=new URL('./',location.href).href;shell.toolbar.remove();shell.status.remove();
+shell.header.querySelector('.fk-more').id='more-toggle';document.querySelector('.toolbar>#more-toggle').remove();
+shell.drawer.body.append($('more'));$('more').hidden=false;
+for(const id of ['hashbin-save','hashbin-load','hashbin-cid','hashbin-status','hashbin-dialog','share-dialog','qr-dialog'])$(id).remove();
 const drafts = new LocalDrafts({ storage: local, key: 'ronline:work' });
 const editor = ace.edit('editor');
 editor.setTheme('ace/theme/chrome'); editor.session.setMode('ace/mode/r');
@@ -17,7 +27,7 @@ function fingerprint() { return JSON.stringify(snapshot()); }
 function persist(edit = false) { drafts.attempt(snapshot(), edit === true); }
 function inputCount() {
   const count = $('stdin').value ? $('stdin').value.replace(/\n$/, '').split('\n').length : 0;
-  $('input-count').textContent = count + (count === 1 ? ' line' : ' lines'); $('mobile-input-count').textContent = count || '';
+  $('input-count').textContent = count + (count === 1 ? ' line' : ' lines'); if($('mobile-input-count'))$('mobile-input-count').textContent=count||'';
 }
 function apply(value) {
   applying = true;
@@ -30,7 +40,7 @@ function clearAnnotation() {
 }
 function state(name) { document.body.dataset.state = name; }
 // Programs, including ones from links, run in HashBin's opaque-origin sandbox.
-const client = new RClient({ createWorker: RSandbox.factory(await loadHashBinSDK()), onMessage(item) {
+const client = new RClient({ createWorker: RSandbox.factory(await loadExecutionSDK()), onMessage(item) {
   if (item.type === 'queued') { clearInterval(clock); output.clear(); clearAnnotation(); status(item.text); state('running'); $('stop').disabled = false; }
   else if (item.type === 'status') status(item.text);
   else if (item.type === 'completions') attachedNames = item.names;
@@ -49,28 +59,20 @@ const client = new RClient({ createWorker: RSandbox.factory(await loadHashBinSDK
   else if (item.type !== 'ready') output.add(item);
 }});
 const scheduler = new RenderScheduler({ detect: () => {}, render: () => run('auto'), renderDelay: 750 });
-function run(mode = 'manual') { scheduler.cancel(); runSuppressed = false; persist(); client.run(editor.getValue(), $('stdin').value, mode); }
+function run(mode = 'manual') { navigationError=null; scheduler.cancel(); runSuppressed = false; persist(); client.run(editor.getValue(), $('stdin').value, mode); }
 $('run').onclick = () => run(); $('stop').onclick = () => { scheduler.cancel(); client.stop(); };
 editor.commands.addCommand({ name: 'run-r', bindKey: { win: 'Ctrl-Enter', mac: 'Command-Enter|Ctrl-Enter' }, exec: () => run() });
 document.addEventListener('keydown', event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); run(); } });
-function selectTab(tab) {
-  $('workspace').dataset.tab = tab;
-  document.querySelectorAll('[data-tab]').forEach(button => { if (button.tagName === 'BUTTON') { button.classList.toggle('selected', button.dataset.tab === tab); button.setAttribute('aria-selected', String(button.dataset.tab === tab)); button.tabIndex = button.dataset.tab === tab ? 0 : -1; } });
-  if (tab === 'input') $('input-pane').querySelector('details').open = true;
-  editor.resize();
-}
-document.querySelectorAll('.mobile-tabs button').forEach(button => button.onclick = () => selectTab(button.dataset.tab));
-document.querySelector('.mobile-tabs').addEventListener('keydown',event=>{
-  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-  const tabs=[...document.querySelectorAll('.mobile-tabs button')],current=tabs.indexOf(document.activeElement);
-  const next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
-  event.preventDefault();selectTab(tabs[next].dataset.tab);tabs[next].focus();
-});
-$('more-toggle').onclick = () => { $('more').hidden = !$('more').hidden; $('more-toggle').setAttribute('aria-expanded', String(!$('more').hidden)); editor.resize(); };
-// Put the same primary actions in the mobile More panel.
-const mobileActions = document.createElement('div'); mobileActions.className = 'mobile-actions'; mobileActions.style.display = 'none';
-for (const [title, id] of [['Download','download-open'],['Share','share-open'],['QR code','qr-open']]) { const button = document.createElement('button'); button.textContent = title; button.onclick = () => $(id).click(); mobileActions.append(button); }
-$('more').prepend(mobileActions);
+document.querySelector('.mobile-tabs').remove();
+const mobile=matchMedia('(max-width:767px)');
+const moveInput=()=>{(mobile.matches?$('workspace'):$('code-pane')).append($('input-pane'));};moveInput();mobile.addEventListener('change',moveInput);
+const labels=['code','output','input'];
+const tabs=mountMobileTabs({container:document.querySelector('.toolbar'),panels:[{label:'Code',panel:$('code-pane')},{label:'Output',panel:$('output-pane')},{label:'Input',panel:$('input-pane')}],onChange:index=>{
+  $('workspace').dataset.tab=labels[index];if(index===2)$('input-pane').querySelector('details').open=true;editor.resize();
+}});
+for(const [index,button]of [...document.querySelectorAll('.fk-tabs button')].entries()){button.id=labels[index]+'-tab';$(labels[index]==='code'?'code-pane':labels[index]+'-pane').setAttribute('aria-labelledby',button.id);}
+function selectTab(tab){tabs.select(labels.indexOf(tab));}
+selectTab('output');
 $('hide-editor').onclick = () => { document.body.classList.toggle('editor-hidden'); $('hide-editor').textContent = document.body.classList.contains('editor-hidden') ? 'Show editor' : 'Hide editor'; editor.resize(); };
 function resizeAt(clientX) { const bounds = $('workspace').getBoundingClientRect(); const ratio = Math.max(20, Math.min(80, (clientX - bounds.left) / bounds.width * 100)); document.documentElement.style.setProperty('--editor-width', ratio + '%'); $('splitter').setAttribute('aria-valuenow', Math.round(ratio)); editor.resize(); }
 $('splitter').onpointerdown = event => { $('splitter').setPointerCapture(event.pointerId); $('splitter').onpointermove = move => resizeAt(move.clientX); };
@@ -81,41 +83,35 @@ $('clear-output').onclick = () => output.clear();
 async function copy(text, target) { try { await navigator.clipboard.writeText(text); if (target) target.textContent = 'Copied'; } catch (_) { status('Copy unavailable here. Select and copy the text manually.'); } }
 $('copy-output').onclick = () => copy(output.text);
 for (const button of document.querySelectorAll('[data-close]')) button.onclick = () => $(button.dataset.close).close();
-const shareClient = new ShareClient();
-function links() { return ShareLinks.build({ url: location.href, ...snapshot(), run: !$('no-run').checked, compress: LZString.compressToEncodedURIComponent }); }
-function shareURL() { return saved && saved.fingerprint === fingerprint() && !$('no-run').checked ? saved.link : links().fallback; }
-function updateShare() { shareClient.cancel(); $('share-url').value = shareURL(); $('share-status').textContent = ''; }
-$('share-open').onclick = () => { updateShare(); $('share-dialog').showModal(); };
-$('no-run').onchange = updateShare;
-$('share-copy').onclick = () => copy($('share-url').value, $('share-status'));
-$('shorten').onclick = async () => { $('share-status').textContent = 'Shortening link…'; const result = await shareClient.shorten({ long: $('share-url').value, fallback: $('share-url').value }); if (!result) return; $('share-url').value = result.url; $('share-status').textContent = result.error?.message || 'Short link ready.'; };
-$('share-dialog').addEventListener('close', () => shareClient.cancel());
-let qrSVG = '';
-$('qr-open').onclick = () => {
-  const url = shareURL(), qr = encodeQr(url); $('qr-image').replaceChildren();
-  $('qr-svg').disabled = $('qr-png').disabled = !qr;
-  $('qr-status').textContent = !qr ? 'This URL is too long for a QR code. Save to HashBin for a shorter link.' : /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? 'This is a local address. Other devices cannot open it. Use the published site and Save to HashBin.' : qr.version > 20 ? 'This is a dense QR code. Save to HashBin for a shorter, easier-to-scan link.' : 'Scan to open this exact program and input.';
-  if (qr) { const size = qr.size + 8; let path = ''; for (let y = 0; y < qr.size; y++) for (let x = 0; x < qr.size; x++) if (qr.modules[y][x]) path += `M${x+4},${y+4}h1v1h-1z`; qrSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size*6}" height="${size*6}" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="white"/><path d="${path}" fill="black"/></svg>`; $('qr-image').innerHTML = qrSVG; }
-  $('qr-dialog').showModal();
-};
-$('qr-svg').onclick = () => RExport.download(qrSVG, 'r-online-qr.svg', 'image/svg+xml');
-$('qr-png').onclick = async () => RExport.download(await RExport.svgPNG(qrSVG), 'r-online-qr.png');
+function links(){return urlState.build(snapshot(),{run:!runSuppressed});}
+function shareURL(){return saved?.fingerprint===fingerprint()?saved.link:links().href;}
+const openSave=()=>panel.openSave();
+const share=createShareDialog({urlState,getSnapshot:snapshot,onSave:openSave});
+const qr=createQrDialog({config,urlState,onLoad:async outcome=>{
+  if(outcome.kind==='cid'){await panel.load(outcome.cid);return;}
+  // A scanned application URL is explicit and uses the same navigation revision guard.
+  const url=new URL(outcome.href);history.pushState(null,'',location.pathname+url.search+url.hash);await openURL();
+},onSave:()=>{qrSave=true;qr.dialog.close();return openSave();}});
+$('share-open').onclick=()=>{shell.drawer.dialog.close();share.open();};
+$('qr-open').onclick=()=>{shell.drawer.dialog.close();qr.open(shareURL());};
 $('download-open').onclick = () => { $('download-svg').disabled = !output.current?.svg; $('download-png').disabled = !output.current; $('download-status').textContent = ''; $('download-dialog').showModal(); };
 $('download-source').onclick = () => RExport.download(editor.getValue(), 'main.R');
 $('download-text').onclick = () => RExport.download(output.text, 'output.txt');
 $('download-svg').onclick = () => RExport.download(output.current.svg, 'drawing.svg', 'image/svg+xml');
 $('download-png').onclick = async () => { try { const item = output.current; const blob = item.png ? RExport.binary64(item.png, 'image/png') : item.svg ? await RExport.svgPNG(item.svg) : item.blob; RExport.download(blob, blob.type === 'image/jpeg' ? 'image.jpeg' : 'image.png'); } catch (error) { $('download-status').textContent = 'Image download failed: ' + error.message; } };
-const store = new HashBinStore({ clientId: document.querySelector('meta[name="hashbin-client-id"]').content, redirectUri: new URL('./', location.href).href, storage: session, transactionStorage: session });
-const panel = new HashBinPanel({ store, getSnapshot: snapshot, getFingerprint: fingerprint,
-  onError(error) { state('error'); status(error.message); },
-  onLoad(value, cid) { scheduler.cancel(); if (client.busy) client.stop(); output.clear(); clearAnnotation(); state('idle'); apply(value); saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, cid) }; history.replaceState(null, '', saved.link); if ($('autorun').checked && !runSuppressed) run('auto'); else status('Ready — press Run (Ctrl+Enter)'); },
-  onSaved(cid, value, link) { saved = { fingerprint: value, link }; history.replaceState(null, '', link); $('hashbin-cid').value = cid; }
+const store=new HashBinStore({legacyStorage:session});
+const panel=new HashBinPanel({store,urlState,container:$('more'),getSnapshot:snapshot,getFingerprint:fingerprint,
+  onLoad(value,cid){navigationRevision++;urlState.cancel();scheduler.cancel();if(client.busy)client.stop();output.clear();clearAnnotation();state('idle');apply(value);
+    const link=cid?urlState.link(location.href,cid):links().href;saved=cid?{fingerprint:fingerprint(),link}:null;history.replaceState(null,'',link);
+    if($('autorun').checked&&!runSuppressed)run('auto');else status('Ready — press Run (Ctrl+Enter)');},
+  onSaved(cid,value,link){urlState.cancel();saved={fingerprint:value,link};history.replaceState(null,'',link);$('hashbin-cid').value=cid;
+    if(qrSave){qrSave=false;panel.dialog.close();qr.open(link);}}
 });
+panel.dialog.addEventListener('close',()=>{qrSave=false;});
 function edited() {
-  if (applying) return;
-  panel.cancelLoad(); persist(true); inputCount(); clearAnnotation();
-  if (saved) { saved = null; history.replaceState(null, '', links().fallback); }
-  if ($('share-dialog').open) updateShare();
+  if (applying) return;navigationError=null;
+  navigationRevision++;urlState.cancel();panel.cancelLoad(); persist(true); inputCount(); clearAnnotation();
+  saved=null;urlState.write(snapshot(),{run:!runSuppressed});
   scheduler.cancel(); if ($('autorun').checked) scheduler.schedule({ detect: false });
 }
 editor.session.on('change', edited); $('stdin').oninput = edited;
@@ -131,34 +127,35 @@ $('offline-packages').onclick = async () => {
   navigator.serviceWorker.controller.postMessage({ type: 'cache-packages' }, [channel.port2]);
 };
 async function openURL() {
-  panel.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
+  navigationError=null;const ownRevision=++navigationRevision;urlState.cancel();panel.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
   output.clear(); clearAnnotation();
-  // Start blank until the URL is resolved. Failed links must not display a local draft.
-  apply({ src: '', r: { stdin: '', autorun: false } }); state('idle');
+  state('idle');
   try {
-    const parsed = ShareLinks.parse(location.href, LZString.decompressFromEncodedURIComponent);
+    const parsed = urlState.parse(location.href);
     runSuppressed = new URL(location.href).searchParams.get('run') === '0';
     if (parsed?.kind === 'publish') {
       const published = await store.published(location.hash);
-      if (published.snapshot) apply(published.snapshot);
-      if (published.cid) { saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, published.cid) }; $('hashbin-cid').value = published.cid; }
+      if(ownRevision!==navigationRevision)return;
+      if (published?.snapshot) apply(published.snapshot);
+      if (published?.cid) { saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, published.cid) }; $('hashbin-cid').value = published.cid; }
       history.replaceState(null, '', saved ? saved.link : links().fallback);
-      $('hashbin-status').textContent = published.error || 'Saved to HashBin.';
+      $('hashbin-status').textContent = published?.error || 'Saved to HashBin.';
     }
-    else if (parsed?.kind === 'source') apply(parsed);
-    else if (parsed?.kind === 'example' || !parsed) {
-      const sample = parsed ? RExamples.catalog.find(value => value.id === parsed.id) : RExamples.catalog[0];
+    else if (parsed.kind==='source') apply(parsed.doc);
+    else if (parsed.kind==='example'||parsed.kind==='none') {
+      const sample = parsed.kind==='example' ? RExamples.catalog.find(value => value.id === parsed.id) : RExamples.catalog[0];
       if (!sample) throw Error('Sample not found. Open the Sample gallery to choose a program.');
       apply({ src: sample.src, r: { stdin: sample.stdin, autorun: true } });
+      if(parsed.kind==='example')history.replaceState(null,'',links().href);
     }
-    if (parsed?.kind === 'cid') { $('hashbin-cid').value = parsed.cid; await panel.load(parsed.cid); }
+    if (parsed?.kind === 'cid') { $('hashbin-cid').value = parsed.cid; await panel.load(parsed.cid);if(ownRevision===navigationRevision&&panel.status.textContent!=='Loaded from HashBin.'){navigationError=panel.status.textContent;status(navigationError);} }
     else if ($('autorun').checked && !runSuppressed) run('auto');
     else status('Ready — press Run (Ctrl+Enter)');
-  } catch (error) { state('error'); status(error.message); }
+  } catch (error) {if(ownRevision===navigationRevision){navigationError=error.message;state('error');status(error.message);}}finally{document.body.dataset.ready='true';}
 }
 store.retireLegacyTokens().catch(() => { /* Retried on the next load. */ });
 // Pasting a saved fragment into the current tab uses the same URL resolution as startup.
-window.addEventListener('hashchange', openURL);
+let lastNavigation=location.href;const navigate=event=>{if(event.type==='hashchange'&&event.newURL!==location.href)return;if(location.href===lastNavigation)return;lastNavigation=location.href;void openURL();};window.addEventListener('hashchange',navigate);window.addEventListener('popstate',navigate);
 await openURL();
 // A small public inspection surface is useful for accessibility tools and integration tests.
 globalThis.ROnline = { editor, client, output, snapshot, run, selectTab };

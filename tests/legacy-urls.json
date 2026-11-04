@@ -1,0 +1,181 @@
+{
+  "repo": "R",
+  "slug": "r",
+  "commit": "7f7a9ce26cf976ec575ebb7fe23a64ce70cca73d",
+  "example": {
+    "id": "welcome",
+    "source": "# Welcome to R Online. Change a value and run again.\nx <- c(2, 4, 8, 16, 32)\ncat(\"Hello, R!\\n\")\nsummary(x)\nplot(x, type = \"b\", pch = 19, col = \"#167c80\",\n     main = \"A little code. Endless possibilities.\", xlab = \"Step\", ylab = \"Value\")\n",
+    "raw": "{\"format\":\"hashbin-diagram\",\"version\":1,\"type\":\"r\",\"src\":\"# Welcome to R Online. Change a value and run again.\\nx <- c(2, 4, 8, 16, 32)\\ncat(\\\"Hello, R!\\\\n\\\")\\nsummary(x)\\nplot(x, type = \\\"b\\\", pch = 19, col = \\\"#167c80\\\",\\n     main = \\\"A little code. Endless possibilities.\\\", xlab = \\\"Step\\\", ylab = \\\"Value\\\")\\n\",\"r\":{\"stdin\":\"Corpus input\\n\",\"autorun\":false}}",
+    "expected": {
+      "src": "# Welcome to R Online. Change a value and run again.\nx <- c(2, 4, 8, 16, 32)\ncat(\"Hello, R!\\n\")\nsummary(x)\nplot(x, type = \"b\", pch = 19, col = \"#167c80\",\n     main = \"A little code. Endless possibilities.\", xlab = \"Step\", ylab = \"Value\")\n",
+      "r": {
+        "stdin": "Corpus input\n",
+        "autorun": false
+      }
+    }
+  },
+  "sourceFiles": {
+    "README.md": "911c89685ce772ea5587741365aa8049120ad5e65578f3c6841eb05fad58c017",
+    "docs/256t-calls.html": "385a1793a2d84a2f4c6045876f4c60db410bb875348fb43b3ff4d6331b43fc33",
+    "docs/256t-calls.md": "75c0504f2f90d279096849d2c95ab1e0a8434274124528d7174ad2f00f940304",
+    "docs/graphics.html": "c43bd797c05b2beb5303aa905b6d3f560b6c37a81246f865815a84a331007a1f",
+    "docs/graphics.md": "40a2241c349b931c956bdfb8030692724cc2d44085c07880f6b6cad57f7ff9be",
+    "docs/input.html": "2e2c8be516d7d0b356c82ad9a309c663b6beaae275776500a0316685158d68cf",
+    "docs/input.md": "b783080057939f406e1376663b7922f528bd611e0f6eee22a310515abe3ea2a8",
+    "index.html": "7ddddb8343a5fceac378d2a6853c1ef684522a39e541a098fedbb8ea33e11263",
+    "offline-assets.js": "56bdc8cd39e3c12e8489f9679a005c82559f7cfd252135b6b16f9c212180a4d8",
+    "service-worker.js": "0a3e5d1929ceb26e99ec4eb29a7396cd643126c746ff61ba8113a435b94e3f8d",
+    "src/app.js": "f74e3ca4adf2d6a84e6fcd8355ca0cfdb51e711b0d1b50fb3232efcc6f58eabf",
+    "src/examples.js": "5ce72160a44d36a05cef3d899f5ae6105f526ef2d376c62c17a8a309bbd8812c",
+    "src/export.js": "1d3ec34b2d5a0eea9e9cb6f2056ca2eff750a1af76f29155629983e633ac6ec7",
+    "src/gallery.js": "8c8c760aa85e80c9d436e4b035e514d77969b23c96740dd14bbc6278a1aae160",
+    "src/hashbin-panel.js": "abc38eab7381f51b4835e6bc4635b59144b7b5d264ad251511d06e41cf1cbb6d",
+    "src/hashbin.js": "eadca93cd2fa3a32e6b89889e52843035c99f7e39e7f5438b25334a1fe104596",
+    "src/local-drafts.js": "63b3e2ab8ad18a3088ff40386bb64e3a2d133ae32fbc7968a662b9069023cb85",
+    "src/offline.js": "208bf7c711b8937db5a84c34cb11908bfd994ea201657aae1f7a35ddcb48eaac",
+    "src/output-view.js": "2c2822ca2d7e5b31c82e78fe10832939ddef9248de190f4c86d2bedd1afcd0c6",
+    "src/qr.js": "a6821da15236196ed734bc65c81ad0ddc03ef363e3b61dd7f550335114961921",
+    "src/r-assets.js": "eeed13844f677916ed3b12c266b10087a34df73e2af3b5c1156c15fb34337c28",
+    "src/r-client.js": "0f9d57bcbcd224bcab4e687b4b46b961047d19f404243968ca1ad149e278ec4d",
+    "src/r-core.js": "0889ff3522a7daf7d843278bd3d12640581bea16a9b45e06d29959768e5c89e7",
+    "src/r-sandbox.js": "a11cac25156a31dffa2c066cafc6cd5ca75e544f053323f615da1b207f34e33c",
+    "src/r-worker.js": "ce2df32c66410cd8268eee312aa3703f2a51d15be94f611243f41109ea6856bb",
+    "src/render-scheduler.js": "2ca91d13be1f761a79427318a6096cfb55f6b15954d67047704e12c824e253a1",
+    "src/runtime-files.json": "27bd3e10e9256e4d5182e319bad56bbc8a18c6ea966155c23acafbb21e65a610",
+    "src/share-links.js": "e6324a7b34ae9bc95bc45d88101faa03bdda9f3e0cde300f7d4fc3eca621a906",
+    "src/t256-bridge.js": "5fb12013fa50fda489baca00bc3938467b6f358b5f4b6a708bf29a9cb17f4133",
+    "src/traceback.js": "7ceb958eeb02539feaca81fb86624c981f34d893867af8eaea0167453afb5373",
+    "tests/assets.test.js": "aa5f8e0a7901e698b9371290f3046d8e0b084e5f74c4569872d62f169692df59",
+    "tests/browser/all.cjs": "3b638cefd9fd9dd40dcaec5c6a4c969fe02f7bee5ec19064b8083816eae4ac96",
+    "tests/browser/hashbin.cjs": "e9fce16cc5f279c03b0e0b35cb17b2d1e554c5274a5074b44621605975dfba90",
+    "tests/browser/live.cjs": "f9fcc26e1544a805419c4f45440cacfa32e1ba329e87d4d7f3c29e4aa6a791af",
+    "tests/browser/server.cjs": "a7115848d91c9997d0caa106a3d5cf98f1ef59734f982cc9eb4d714564bd5fa1",
+    "tests/browser/url-state.cjs": "cd9da5738282e8e7e78d52feccc51956115a27c9d215cad6ef4f33e922b718c8",
+    "tests/client.test.js": "54034b21d65c31ba53acfbd84d6d5ec336010f5b33d41448ee682dc418e1b595",
+    "tests/core.test.js": "3931da2a6f29d3239e6123bba4f6c30790a91dc07cebfe57dab32af470aea629",
+    "tests/drafts.test.js": "d2acc84e28686018a2edda76f28e0167f219dfa031478b2472ed04b0c6e7e74f",
+    "tests/qr.test.js": "29088fb4afec2de59e1840620bcf791efb3e252cc29ff0bb9d0bb9f561d77dd1",
+    "tests/sharing.test.js": "f0561393f7985d36adb1453b5f6558fb3d631080694b72dc1c732445400292fb",
+    "tests/spike.test.js": "77f4b21d28d6237985267e85afbe030659eee1a52585ccae9b253686c2d2c0e3",
+    "tests/t256.test.js": "8e39703595be48934322a008cd6d9a12daea3dfa6c719b6e55a8126815dcaf7e"
+  },
+  "storage": [
+    {
+      "file": "src/app.js",
+      "key": "ronline:work"
+    },
+    {
+      "file": "tests/browser/hashbin.cjs",
+      "key": "ronline:test:publish"
+    },
+    {
+      "file": "tests/browser/hashbin.cjs",
+      "key": "ronline:test:publish"
+    },
+    {
+      "file": "tests/drafts.test.js",
+      "key": "work"
+    },
+    {
+      "file": "tests/drafts.test.js",
+      "key": "work"
+    },
+    {
+      "file": "tests/drafts.test.js",
+      "key": "work"
+    },
+    {
+      "file": "tests/drafts.test.js",
+      "key": "work"
+    }
+  ],
+  "caches": [],
+  "references": [
+    {
+      "file": "README.md",
+      "href": "https://curtcox.github.io/R/gallery.html)"
+    },
+    {
+      "file": "docs/input.html",
+      "href": "./?example=text-file"
+    },
+    {
+      "file": "docs/input.html",
+      "href": "./?example=csv-file"
+    },
+    {
+      "file": "docs/input.html",
+      "href": "./?example=json-file"
+    },
+    {
+      "file": "docs/input.html",
+      "href": "./?example=tsv-file"
+    },
+    {
+      "file": "docs/input.html",
+      "href": "./?example=fixed-width-file"
+    },
+    {
+      "file": "docs/input.md",
+      "href": "./?example=text-file),"
+    },
+    {
+      "file": "docs/input.md",
+      "href": "./?example=csv-file),"
+    },
+    {
+      "file": "docs/input.md",
+      "href": "./?example=json-file),"
+    },
+    {
+      "file": "docs/input.md",
+      "href": "./?example=tsv-file),"
+    },
+    {
+      "file": "docs/input.md",
+      "href": "./?example=fixed-width-file)"
+    },
+    {
+      "file": "tests/sharing.test.js",
+      "href": "https://example.com/?example=star"
+    }
+  ],
+  "cases": [
+    {
+      "label": "source fragment",
+      "href": "https://curtcox.github.io/R/#%23%20Welcome%20to%20R%20Online.%20Change%20a%20value%20and%20run%20again.%0Ax%20%3C-%20c(2%2C%204%2C%208%2C%2016%2C%2032)%0Acat(%22Hello%2C%20R!%5Cn%22)%0Asummary(x)%0Aplot(x%2C%20type%20%3D%20%22b%22%2C%20pch%20%3D%2019%2C%20col%20%3D%20%22%23167c80%22%2C%0A%20%20%20%20%20main%20%3D%20%22A%20little%20code.%20Endless%20possibilities.%22%2C%20xlab%20%3D%20%22Step%22%2C%20ylab%20%3D%20%22Value%22)%0A",
+      "kind": "source",
+      "src": "# Welcome to R Online. Change a value and run again.\nx <- c(2, 4, 8, 16, 32)\ncat(\"Hello, R!\\n\")\nsummary(x)\nplot(x, type = \"b\", pch = 19, col = \"#167c80\",\n     main = \"A little code. Endless possibilities.\", xlab = \"Step\", ylab = \"Value\")\n"
+    },
+    {
+      "label": "compressed query",
+      "href": "https://curtcox.github.io/R/?compressed=MQAg6gpgNgxg9gWwiALnEAlEB5AdlAS1wgDoQBhACwENcBzZakAN2qgFdHcATEAJ3a4Q1OtSIkAUAA8QAHgC0IGAAoATABoQAFk0AOTQEYAbJoDMqgJQSY1FMoBEACWhQ4mjAEIAOrntWAzuwICNR8AJ7KUlYADq52UpooYdHIALwg9gBG9prRMJQg6QYAnJrwUIUZwMYA7DC6AAw5EiCtrSFElfYAgiCEKChQyPDcpCAAojxD-v4g0XAzBJkE-QQQ-iQ5IFJQ1JldAMooENFbYbv76fYAamycfhJAA",
+      "kind": "source",
+      "src": "# Welcome to R Online. Change a value and run again.\nx <- c(2, 4, 8, 16, 32)\ncat(\"Hello, R!\\n\")\nsummary(x)\nplot(x, type = \"b\", pch = 19, col = \"#167c80\",\n     main = \"A little code. Endless possibilities.\", xlab = \"Step\", ylab = \"Value\")\n"
+    },
+    {
+      "label": "document query",
+      "href": "https://curtcox.github.io/R/?doc=N4IgZg9gTgtghgFxALhACzgZzQIwJYB2AtACZ5wDmUcMIANCAG4CmUmeEBKAjAwgJ4AHZihBR6ITFADGogMQACAOrMANtIgxmChBAUAlBQHkCqwswB0CgMIYCFbXAWM4qgK6OCJBVDcEFlHCEFgA6BAAeCgA8RArSABQATHQKACwpABwp3ABsKQDMiQCUYdKI8SEgABJqqhAp+gCEIWGVJQSYbjDwUPzx4e2CdQj9KQLCCgC8CpU4lSmC0mhTCtwAnCkaqiuVcrkA7NIZAAzzYQoXF-CEOyAAggpmCAiq2hoklgoAol6vmJgKQQQf54fBPPDMTChegKcKqOA4W4AZQQzEE8wU-HhiOmlQAaq4PG0whJxMhQJgEGQuKhrNBBG4AYQGQgSQw4G5dL4aWBXJhmABfAVAA",
+      "kind": "source",
+      "raw": "{\"format\":\"hashbin-diagram\",\"version\":1,\"type\":\"r\",\"src\":\"# Welcome to R Online. Change a value and run again.\\nx <- c(2, 4, 8, 16, 32)\\ncat(\\\"Hello, R!\\\\n\\\")\\nsummary(x)\\nplot(x, type = \\\"b\\\", pch = 19, col = \\\"#167c80\\\",\\n     main = \\\"A little code. Endless possibilities.\\\", xlab = \\\"Step\\\", ylab = \\\"Value\\\")\\n\",\"r\":{\"stdin\":\"Corpus input\\n\",\"autorun\":false}}"
+    },
+    {
+      "label": "document fragment",
+      "href": "https://curtcox.github.io/R/#%7B%22format%22%3A%22hashbin-diagram%22%2C%22version%22%3A1%2C%22type%22%3A%22r%22%2C%22src%22%3A%22%23%20Welcome%20to%20R%20Online.%20Change%20a%20value%20and%20run%20again.%5Cnx%20%3C-%20c(2%2C%204%2C%208%2C%2016%2C%2032)%5Cncat(%5C%22Hello%2C%20R!%5C%5Cn%5C%22)%5Cnsummary(x)%5Cnplot(x%2C%20type%20%3D%20%5C%22b%5C%22%2C%20pch%20%3D%2019%2C%20col%20%3D%20%5C%22%23167c80%5C%22%2C%5Cn%20%20%20%20%20main%20%3D%20%5C%22A%20little%20code.%20Endless%20possibilities.%5C%22%2C%20xlab%20%3D%20%5C%22Step%5C%22%2C%20ylab%20%3D%20%5C%22Value%5C%22)%5Cn%22%2C%22r%22%3A%7B%22stdin%22%3A%22Corpus%20input%5Cn%22%2C%22autorun%22%3Afalse%7D%7D",
+      "kind": "source",
+      "raw": "{\"format\":\"hashbin-diagram\",\"version\":1,\"type\":\"r\",\"src\":\"# Welcome to R Online. Change a value and run again.\\nx <- c(2, 4, 8, 16, 32)\\ncat(\\\"Hello, R!\\\\n\\\")\\nsummary(x)\\nplot(x, type = \\\"b\\\", pch = 19, col = \\\"#167c80\\\",\\n     main = \\\"A little code. Endless possibilities.\\\", xlab = \\\"Step\\\", ylab = \\\"Value\\\")\\n\",\"r\":{\"stdin\":\"Corpus input\\n\",\"autorun\":false}}"
+    },
+    {
+      "label": "example",
+      "href": "https://curtcox.github.io/R/?example=welcome",
+      "kind": "example",
+      "id": "welcome"
+    },
+    {
+      "label": "CID",
+      "href": "https://curtcox.github.io/R/#AAAAAADuiczGfldZwsIZO4-nyiNp2bUkyQofnbleAMP7eFUKFQhBoIGgKJ9lIqdAYZZ-cBANvYjzTysDHne2ducb42QyDA",
+      "kind": "cid",
+      "cid": "AAAAAADuiczGfldZwsIZO4-nyiNp2bUkyQofnbleAMP7eFUKFQhBoIGgKJ9lIqdAYZZ-cBANvYjzTysDHne2ducb42QyDA"
+    }
+  ]
+}

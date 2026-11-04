@@ -7,7 +7,7 @@ async function cid(text) {
   return encode(size) + encode(bytes.length <= 64 ? bytes : new Uint8Array(await crypto.subtle.digest('SHA-512', bytes)));
 }
 export class HashBinClient {
-  constructor(config) { this.config = config; }
+  constructor(config) { this.config = {...config,redirectUri:location.origin+'/'}; }
   // Mirrors the real SDK: tests choose approval, cancellation or a blocked popup (redirect).
   publish(content, { clientState }) {
     const outcome = localStorage.getItem('ronline:test:publish') || 'approve';
