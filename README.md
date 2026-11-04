@@ -128,7 +128,7 @@ Program URLs always open the linked document, regardless of browser history or l
 ## Fragment Kit migration
 
 Shared URL, HashBin Publish, QR camera/image loading, drafts, scheduling, dialogs,
-mobile tabs, gallery and offline tools use the immutable Fragment Kit v0.3.2 pin.
+mobile tabs, gallery and offline tools use the immutable Fragment Kit v0.3.3 pin.
 R owns its schema, legacy writer, webR sandbox, t256 bridge, output display and
 optional-package cache. Existing local work and cache prefixes are preserved.
 The independent execution SDK remains v0.3.0; Publish uses the kit's v0.4.0 SDK.
