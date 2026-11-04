@@ -17,3 +17,6 @@
 .traceback-link{min-height:44px;display:inline-flex;align-items:center}
 @media(prefers-color-scheme:dark){.console,.pane-heading{color:var(--fk-text)}.run-status{color:var(--fk-muted)}.stderr{color:#ff9a9f}}
 .toolbar>.check{min-height:44px}
+
+@media(max-width:767px){#workspace>#input-pane details{display:block}#workspace>#input-pane details::details-content{height:calc(100% - 44px)}#workspace>#input-pane #stdin{height:100%;min-height:100%;resize:none}}
+.draft-recovery button{min-height:44px}

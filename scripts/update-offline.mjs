@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {generateOffline} from '../vendor/fragment-kit-v0.3.2/tools/offline-assets.mjs';
+import {generateOffline} from '../vendor/fragment-kit-v0.3.3/tools/offline-assets.mjs';
 const check=process.argv.includes('--check'),webr='https://cdn.jsdelivr.net/npm/webr@0.6.0/dist/';
 const config=JSON.parse(await fs.readFile('offline.config.json','utf8'));
 const runtime=JSON.parse(await fs.readFile('src/runtime-files.json','utf8')),remote={};

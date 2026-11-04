@@ -1,4 +1,4 @@
-import * as kit from '../vendor/fragment-kit-v0.3.2/src/index.js';
+import * as kit from '../vendor/fragment-kit-v0.3.3/src/index.js';
 import appConfig from '../fragment-kit.config.json' with { type: 'json' };
 export const config = kit.createConfig(appConfig);
 export const type = { type:'r',settingsKeys:[],fileName:'program.json',contentType:'application/json',
@@ -17,6 +17,6 @@ export const HashBinDocuments={...urlState.documents,MAX_BYTES:config.maxBytes,l
 export class HashBinStore extends kit.HashBinStore {constructor(options={}){super({config,type,...options});}}
 export const ShareLinks={build:({url,run,view,...doc})=>urlState.build(doc,{url,run,view}),parse:href=>{const intent=urlState.parse(href);return intent.kind==='none'?null:{...intent,...intent.doc};}};
 export const LZString={compressToEncodedURIComponent:kit.compress,decompressFromEncodedURIComponent:kit.decompress};
-export {ShareClient} from '../vendor/fragment-kit-v0.3.2/src/index.js';
+export {ShareClient} from '../vendor/fragment-kit-v0.3.3/src/index.js';
 // Execution keeps its independently pinned v0.3.0 sandbox. Publish uses the kit's v0.4.0 SDK.
 export const loadExecutionSDK=()=>import('../vendor/hashbin-sdk-v0.3.0.mjs');

@@ -19,8 +19,8 @@
     "vendor/hashbin-sdk-v0.3.0.mjs",
     "vendor/hashbin-cache-v0.3.0.js",
     "vendor/sha512.min.js",
-    "vendor/fragment-kit-v0.3.2/src",
-    "vendor/fragment-kit-v0.3.2/vendor",
+    "vendor/fragment-kit-v0.3.3/src",
+    "vendor/fragment-kit-v0.3.3/vendor",
     "gallery/covers"
   ],
   "remote": {
