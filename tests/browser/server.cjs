@@ -18,7 +18,7 @@ function createServer(){
   if(/\.(js|mjs|html|json)$/.test(file)&&!file.includes('node_modules')&&!file.includes('/vendor/'))data=Buffer.from(data.toString().replaceAll(CDN,base+'/__webr__/').replaceAll(REPO,base+'/__packages__/'));
   if(path.basename(file)==='t256-bridge.js')data=Buffer.from(data.toString().replace('https://256t.us/',base+'/__256t__/'));
   if(path.extname(file)==='.html')data=Buffer.from(data.toString().replace("connect-src 'self' https:","connect-src 'self' https: "+base));
-  if(path.basename(file)==='index.html'&&url?.searchParams.has('hashbin-test'))data=Buffer.from(data.toString().replace('name="hashbin-client-id" content=""','name="hashbin-client-id" content="test-client"'));
+  if(path.basename(file)==='index.html'&&url?.searchParams.has('hashbin-test'))data=Buffer.from(data.toString().replace(/name="hashbin-client-id" content="[^"]*"/,'name="hashbin-client-id" content="test-client"'));
   if(path.basename(file)==='hashbin.js'&&url?.searchParams.has('fixture'))data=Buffer.from(data.toString());
   return data;
  }
@@ -27,7 +27,7 @@ function createServer(){
   if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||fs.statSync(file).isDirectory()){res.writeHead(404);res.end('Not found');return;}
   if(url.pathname.startsWith('/__256t__/')){const cid=path.basename(url.pathname);cidRequests.set(cid,(cidRequests.get(cid)||0)+1);}
   let data=served(file,url);
-  if(path.basename(file)==='index.html'&&req.headers.cookie?.includes('ronline-test-client=1'))data=Buffer.from(data.toString().replace('name="hashbin-client-id" content=""','name="hashbin-client-id" content="test-client"'));
+  if(path.basename(file)==='index.html'&&req.headers.cookie?.includes('ronline-test-client=1'))data=Buffer.from(data.toString().replace(/name="hashbin-client-id" content="[^"]*"/,'name="hashbin-client-id" content="test-client"'));
   if(path.basename(file)==='offline-assets.js'){
    delete require.cache[require.resolve('../../offline-assets.js')];const manifest=require('../../offline-assets.js');const convert=asset=>asset.replace(CDN,base+'/__webr__/').replace(REPO,base+'/__packages__/');
    const hashes={};

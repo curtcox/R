@@ -29,7 +29,7 @@ test('documents validate versions, input and byte limits; unknown types remain t
 function memory() { const data = new Map(); return {data,setItem:(k,v)=>data.set(k,v),getItem:k=>data.get(k) ?? null,removeItem:k=>data.delete(k)}; }
 function fullCID(text) { const data = Buffer.from(text), size = Buffer.alloc(6); size.writeUIntBE(data.length,0,6); return size.toString('base64url') + (data.length <= 64 ? data : require('node:crypto').createHash('sha512').update(data).digest()).toString('base64url'); }
 test('HashBin placeholder provides clear registration guidance', async () => {
-  await assert.rejects(()=>new HashBinStore().init(),/registered client ID/);
+  await assert.rejects(()=>new HashBinStore({clientId:''}).init(),/registered client ID/);
 });
 test('saves go through HashBin Publish with the vendored SDK release and verify the returned CID', async () => {
   const snapshot = {src:'print(1)',r:{stdin:'x',autorun:true}}, payload = D.serialize(snapshot); let options;
