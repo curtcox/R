@@ -133,3 +133,5 @@ R owns its schema, legacy writer, webR sandbox, t256 bridge, output display and
 optional-package cache. Existing local work and cache prefixes are preserved.
 The independent execution SDK remains v0.3.0; Publish uses the kit's v0.4.0 SDK.
 See `docs/fragment-kit-migration.md` for acceptance and deployment state.
+
+Canonical registration (2026-11-05): `app_d38327d1-7d1a-40c0-925c-8b3deea6e51e`, with the sole return URL `https://r.hashbin.page/`. The GitHub Pages recovery copy preserves old links and drafts; Publish approval is available from the canonical site.

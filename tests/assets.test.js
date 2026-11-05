@@ -8,7 +8,7 @@ test('editor and gallery CSP keep the approved runtime policy and opaque bootstr
  const pages=['index.html','gallery.html'].map(name=>fs.readFileSync(path.join(root,name),'utf8'));
  const policies=pages.map(text=>text.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1]);assert.equal(policies[0],policies[1]);
  for(const policy of policies){for(const value of ["'unsafe-eval'","'wasm-unsafe-eval'",'sha256-IMEqdP+AkCKdxhM3X7mQM4pV/chykJXPvdtndD+XeH8=',"worker-src 'self' blob:","object-src 'none'"])assert.ok(policy.includes(value),value);}
- assert.match(pages[0],/name="hashbin-client-id" content=""/);
+ assert.match(pages[0],/name="hashbin-client-id" content="app_d38327d1-7d1a-40c0-925c-8b3deea6e51e"/);
  assert.match(pages[0],/main\.R/);assert.match(pages[0],/R 4\.6\.0 · webR 0\.6\.0/);
  for(const page of pages)for(const match of page.matchAll(/(?:src|href)="([^"#?]+)(?:\?[^"#]*)?"/g))if(!/^(?:https?:|\.\/\?)/.test(match[1]))assert.ok(fs.existsSync(path.join(root,match[1])),match[1]);
 });

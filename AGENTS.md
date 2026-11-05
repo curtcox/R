@@ -30,8 +30,8 @@ The plan is todo/master_plan.md; update its implementation record when decisions
   links load independently of stored work; preserve drafts for explicit recovery. Envelope type is r,
   with r:{stdin,autorun}; document limit is 5 MiB. The public inspection surface is
   ROnline. Save uses SDK publish synchronously from a click, never OAuth tokens.
-- hashbin-client-id is intentionally empty. Register R Online with return URL
-  exactly https://curtcox.github.io/R/ before adding the supplied public ID.
+- R Online is registered as app_d38327d1-7d1a-40c0-925c-8b3deea6e51e with return URL
+  exactly https://r.hashbin.page/. The recovery origin is not registered.
   No paid documents have been published. Gallery saved documents use inline CIDs.
   Larger paid saves require showing the exact price and user approval first.
 - The HashBin SDK/cache files are immutable byte-for-byte v0.3.0 copies from
@@ -74,7 +74,7 @@ Explicit program, source, example and CID URLs always load their document, indep
 ## Fragment Kit
 
 Shared contracts: `vendor/fragment-kit-v0.3.3/docs/contracts.md`. The JSON app config
-is `fragment-kit.config.json`; keep its HashBin ID empty until supplied. The kit
+is `fragment-kit.config.json`; keep its registered public HashBin ID in index.html. The kit
 uses SDK v0.4.0 only for Publish. Keep the independent byte-pinned v0.3.0 execution
 SDK and cache verifier for webR isolation and first-fetch integrity. Do not alter
 any vendored bytes. Preserve `ronline:work`, `ronline-` caches, and spike caches.
