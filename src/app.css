@@ -20,3 +20,7 @@
 
 @media(max-width:767px){#workspace>#input-pane details{display:block}#workspace>#input-pane details::details-content{height:calc(100% - 44px)}#workspace>#input-pane #stdin{height:100%;min-height:100%;resize:none}}
 .draft-recovery button{min-height:44px}
+
+#workspace[data-fk-view="single"]>.fk-view-panel:not([hidden]){display:flex!important;width:100%!important;flex:1;min-width:0}
+#workspace[data-fk-view="single"]>#input-pane{height:100%;padding:12px}#workspace[data-fk-view="single"]>#input-pane details{display:flex;flex-direction:column;width:100%;height:100%}#workspace[data-fk-view="single"] #stdin{width:100%;flex:1}
+.fk-compact>.fk-toolbar .fk-tabs{display:flex;flex:none}

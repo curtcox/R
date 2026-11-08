@@ -135,3 +135,9 @@ The independent execution SDK remains v0.3.0; Publish uses the kit's v0.4.0 SDK.
 See `docs/fragment-kit-migration.md` for acceptance and deployment state.
 
 Canonical registration (2026-11-05): `app_d38327d1-7d1a-40c0-925c-8b3deea6e51e`, with the sole return URL `https://r.hashbin.page/`. The GitHub Pages recovery copy preserves old links and drafts; Publish approval is available from the canonical site.
+
+## Prepared interface update
+
+This branch prepares Fragment Kit v0.3.5 for compact controls, readable dialogs,
+and single-pane or split workspace views. On phones, status details are in More.
+Shared release publication and site deployment are still pending.
