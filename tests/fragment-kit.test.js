@@ -8,7 +8,7 @@ for(const entry of corpus.cases)test('R production adapter: '+entry.label,async(
  if(entry.kind==='example')assert.equal(intent.id,entry.id);
 });
 test('R reads v1 while writing legacy source/input links',()=>{
- const {createUrlState}=require('../vendor/fragment-kit-v0.3.3/src/index.js');const doc={src:'cat(readline())',r:{stdin:'Ada\n',autorun:false}};
+ const {createUrlState}=require('../vendor/fragment-kit-v0.3.5/src/index.js');const doc={src:'cat(readline())',r:{stdin:'Ada\n',autorun:false}};
  const modern=createUrlState({config,type}).build(doc).href;assert.deepEqual(urlState.parse(modern).doc,doc);
  const legacy=urlState.build(doc,{url:config.recoveryOrigin,run:false});assert.equal(new URL(legacy.href).hash,'');assert.deepEqual(urlState.parse(legacy.href).doc,doc);assert.equal(urlState.parse(legacy.href).run,false);
 });
