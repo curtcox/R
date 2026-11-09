@@ -142,3 +142,18 @@ This app uses released Fragment Kit v0.3.5 for compact controls, readable dialog
 and individual-pane or split workspace views. On phones, primary feedback stays
 visible while status details are available in More.
 Current deployment evidence is recorded in the [shared rollout status](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/blob/main/todo/rollout-status.md).
+
+## Ask for an R change
+
+Use **Ask** to describe a source or program-input change, copy a prompt to your
+preferred chat or connect your own model in **AI settings**, and review the diff
+before accepting. Accepted changes wait for **Run**, even with Auto-run enabled.
+Use **Undo** to restore the prior document. Keys are never saved on the editor
+origin. Provider spending caps start at zero; set your own limit and approve the
+data destination before a paid call. No AI request runs on link load.
+
+The gallery offers model suggestions and keeps its ordinary search and filters.
+**Compare models** uses 25 synthetic R cases checked in isolated real R
+interpreters and reports success intervals, cost and latency separately.
+See [the migration notes](docs/fragment-kit-migration.html) and
+[actual rollout receipts](todo/ai_acceptance.json).

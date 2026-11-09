@@ -1,0 +1,1108 @@
+{
+  "format": "fragment-kit-eval-suite",
+  "version": 1,
+  "app": "r",
+  "cases": [
+    {
+      "id": "greeting",
+      "kind": "change",
+      "base": {
+        "src": "cat('Hello\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Change the greeting to Hello, world!",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "Hello, world!\n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat('Hello, world!\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat('Hello\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "sum",
+      "kind": "change",
+      "base": {
+        "src": "x <- c(2,4,6); cat(x, \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the sum instead of the vector.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "12 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c(2,4,6); cat(sum(x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c(2,4,6); cat(x, \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "mean",
+      "kind": "change",
+      "base": {
+        "src": "x <- c(2,4,9); cat(sum(x), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the mean.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "5 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c(2,4,9); cat(mean(x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c(2,4,9); cat(sum(x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "median",
+      "kind": "change",
+      "base": {
+        "src": "x <- c(1,2,9); cat(mean(x), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the median.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "2 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c(1,2,9); cat(median(x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c(1,2,9); cat(mean(x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "sequence",
+      "kind": "change",
+      "base": {
+        "src": "cat(1:3, \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Extend the sequence through 5.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "1 2 3 4 5 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(1:5, \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(1:3, \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "filter",
+      "kind": "change",
+      "base": {
+        "src": "x <- 1:6; cat(x[x < 4], \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Keep the values greater than 3.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "4 5 6 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- 1:6; cat(x[x > 3], \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- 1:6; cat(x[x < 4], \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "missing",
+      "kind": "change",
+      "base": {
+        "src": "x <- c(1,NA,3); cat(sum(x), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Sum while ignoring missing values.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "4 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c(1,NA,3); cat(sum(x,na.rm=TRUE), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c(1,NA,3); cat(sum(x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "sort",
+      "kind": "change",
+      "base": {
+        "src": "cat(sort(c(4,1,3)), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Sort in descending order.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "4 3 1 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(sort(c(4,1,3),decreasing=TRUE), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(sort(c(4,1,3)), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "unique",
+      "kind": "change",
+      "base": {
+        "src": "cat(c(2,2,3,3), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print distinct values in their original order.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "2 3 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(unique(c(2,2,3,3)), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(c(2,2,3,3), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "strings",
+      "kind": "change",
+      "base": {
+        "src": "cat(tolower('Hello'), '\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the greeting in uppercase.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "HELLO \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(toupper('Hello'), '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(tolower('Hello'), '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "join",
+      "kind": "change",
+      "base": {
+        "src": "cat(paste(c('red','blue')), '\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Join the colors with a comma and space.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "red, blue \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(paste(c('red','blue'),collapse=', '), '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(paste(c('red','blue')), '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "data-frame",
+      "kind": "change",
+      "base": {
+        "src": "d <- data.frame(x=c(1,2),y=c(3,4)); cat(sum(d$x), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Sum the y column instead.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "7 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "d <- data.frame(x=c(1,2),y=c(3,4)); cat(sum(d$y), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "d <- data.frame(x=c(1,2),y=c(3,4)); cat(sum(d$x), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "matrix",
+      "kind": "change",
+      "base": {
+        "src": "m <- matrix(1:6,nrow=2); cat(rowSums(m), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the column sums.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "3 7 11 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "m <- matrix(1:6,nrow=2); cat(colSums(m), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "m <- matrix(1:6,nrow=2); cat(rowSums(m), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "factor",
+      "kind": "change",
+      "base": {
+        "src": "f <- factor(c('b','a','b')); cat(length(f), '\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the number of factor levels.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "2 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "f <- factor(c('b','a','b')); cat(nlevels(f), '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "f <- factor(c('b','a','b')); cat(length(f), '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "function",
+      "kind": "change",
+      "base": {
+        "src": "square <- function(x) x+2; cat(square(4), \"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Fix square to return x squared.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "16 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "square <- function(x) x^2; cat(square(4), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "square <- function(x) x+2; cat(square(4), \"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "loop",
+      "kind": "change",
+      "base": {
+        "src": "total <- 0; for(i in 1:3) total <- total+i; cat(total,\"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Sum the integers from 1 through 5.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "15 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "total <- 0; for(i in 1:5) total <- total+i; cat(total,\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "total <- 0; for(i in 1:3) total <- total+i; cat(total,\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "list",
+      "kind": "change",
+      "base": {
+        "src": "x <- list(name='Ada',age=37); cat(x$age,'\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the name.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "Ada \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- list(name='Ada',age=37); cat(x$name,'\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- list(name='Ada',age=37); cat(x$age,'\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "regex",
+      "kind": "change",
+      "base": {
+        "src": "x <- c('cat','dog','cats'); cat(grep('cat',x,value=TRUE),'\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Match only the whole word cat.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "cat \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c('cat','dog','cats'); cat(grep('^cat$',x,value=TRUE),'\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c('cat','dog','cats'); cat(grep('cat',x,value=TRUE),'\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "round",
+      "kind": "change",
+      "base": {
+        "src": "cat(round(pi,1),\"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Round pi to three decimal places.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "3.142 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(round(pi,3),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(round(pi,1),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "cumsum",
+      "kind": "change",
+      "base": {
+        "src": "cat(sum(1:4),\"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Print the cumulative sums.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "1 3 6 10 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(cumsum(1:4),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(sum(1:4),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "apply",
+      "kind": "change",
+      "base": {
+        "src": "m <- matrix(1:4,nrow=2); cat(apply(m,1,sum),\"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Apply sum to columns.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "3 7 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "m <- matrix(1:4,nrow=2); cat(apply(m,2,sum),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "m <- matrix(1:4,nrow=2); cat(apply(m,1,sum),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "named",
+      "kind": "change",
+      "base": {
+        "src": "x <- c(a=10,b=20); cat(x[['a']], '\\n')\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Extract b instead.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "20 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c(a=10,b=20); cat(x[['b']], '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c(a=10,b=20); cat(x[['a']], '\\n')\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "logical",
+      "kind": "change",
+      "base": {
+        "src": "x <- c(TRUE,FALSE,TRUE); cat(all(x),\"\\n\")\n",
+        "r": {
+          "stdin": "",
+          "autorun": false
+        }
+      },
+      "request": "Check whether any value is TRUE.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "TRUE \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- c(TRUE,FALSE,TRUE); cat(any(x),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- c(TRUE,FALSE,TRUE); cat(all(x),\"\\n\")\n",
+          "r": {
+            "stdin": "",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "input",
+      "kind": "change",
+      "base": {
+        "src": "x <- scan(text=readLines(\"stdin\"),quiet=TRUE); cat(length(x),\"\\n\")\n",
+        "r": {
+          "stdin": "2 4 6\n",
+          "autorun": false
+        }
+      },
+      "request": "Print the sum of the input values.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/r"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "2 4 6\n12 \n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "x <- scan(text=readLines(\"stdin\"),quiet=TRUE); cat(sum(x),\"\\n\")\n",
+          "r": {
+            "stdin": "2 4 6\n",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "x <- scan(text=readLines(\"stdin\"),quiet=TRUE); cat(length(x),\"\\n\")\n",
+          "r": {
+            "stdin": "2 4 6\n",
+            "autorun": false
+          }
+        }
+      }
+    },
+    {
+      "id": "input-change",
+      "kind": "change",
+      "base": {
+        "src": "cat(readLines(\"stdin\"),sep=\"\\n\")\n",
+        "r": {
+          "stdin": "Hello\n",
+          "autorun": false
+        }
+      },
+      "request": "Change program input from Hello to Goodbye without modifying source.",
+      "checks": [
+        {
+          "type": "valid"
+        },
+        {
+          "type": "unchangedFields",
+          "fields": [
+            "/src",
+            "/r/autorun"
+          ]
+        },
+        {
+          "type": "site",
+          "name": "runsAndOutputs",
+          "expected": "Goodbye\nGoodbye\n"
+        }
+      ],
+      "reference": {
+        "good": {
+          "src": "cat(readLines(\"stdin\"),sep=\"\\n\")\n",
+          "r": {
+            "stdin": "Goodbye\n",
+            "autorun": false
+          }
+        },
+        "bad": {
+          "src": "cat(readLines(\"stdin\"),sep=\"\\n\")\n",
+          "r": {
+            "stdin": "Hello\n",
+            "autorun": false
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "status": "candidate; deployment pending",
+  "kitVersion": "0.4.3",
+  "publishedPinVerified": true,
+  "suite": {"cases":25,"engine":"webR 0.6.0 / R 4.6.0","references":"good passes and bad fails in fresh opaque sandboxes"},
+  "local": {"unit":50,"aiBrowsers":["chromium","webkit"]},
+  "canonical": "https://r.hashbin.page/",
+  "recovery": "https://curtcox.github.io/R/",
+  "aiHost": "https://ai.hashbin.page/v0.4.3/",
+  "limitations": ["Native Safari is unverified.","GPU and on-device R model comparisons are unverified.","No live provider calls have been made for the R comparison yet.","This is prepared source, not a deployment receipt."]
+}

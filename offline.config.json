@@ -19,9 +19,10 @@
     "vendor/hashbin-sdk-v0.3.0.mjs",
     "vendor/hashbin-cache-v0.3.0.js",
     "vendor/sha512.min.js",
-    "vendor/fragment-kit-v0.3.5/src",
-    "vendor/fragment-kit-v0.3.5/vendor",
-    "gallery/covers"
+    "vendor/fragment-kit-v0.4.3/src",
+    "vendor/fragment-kit-v0.4.3/vendor",
+    "gallery/covers",
+    "ai-suite.json"
   ],
   "remote": {
     "https://cdn.jsdelivr.net/npm/webr@0.6.0/dist/R.js": "162adb529111d739b37ef1b9f889eb7afbe4fb3288f8a58166cd6d0b04fd7376",

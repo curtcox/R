@@ -1,8 +1,14 @@
-import {LocalDrafts,RenderScheduler,HashBinPanel,compactShell,createShell,mountMobileTabs,createShareDialog,createQrDialog} from '../vendor/fragment-kit-v0.3.5/src/index.js';
+import { mountRAi } from './ai.mjs';
+import { handleAiCallback } from '../vendor/fragment-kit-v0.4.3/src/ai/index.js';
+let aiCallback=false,aiCallbackError;
+try {aiCallback=handleAiCallback();}catch(error){aiCallbackError=error;}
+import {LocalDrafts,RenderScheduler,HashBinPanel,compactShell,createShell,mountMobileTabs,createShareDialog,createQrDialog} from '../vendor/fragment-kit-v0.4.3/src/index.js';
 import {config,type,urlState,HashBinDocuments,HashBinStore,LZString,loadExecutionSDK} from './fragment-config.mjs';
 Object.assign(globalThis,{HashBinDocuments,LZString}); // t256 verification and established URL inspection surface.
 /* Editor orchestration. R and all package execution stay in the worker. */
 (async () => {
+if(aiCallback||aiCallbackError){document.getElementById("status").textContent=aiCallbackError?.message||"AI connection returned to the original popup.";return;}
+let ai=null,aiHoldRun=false;
 let navigationError=null;
 const $ = id => document.getElementById(id), status = text => { $('status').textContent = navigationError??text; };
 const storage = kind => { try { return window[kind]; } catch (_) { return undefined; } };
@@ -41,7 +47,8 @@ function clearAnnotation() {
 }
 function state(name) { document.body.dataset.state = name; }
 // Programs, including ones from links, run in HashBin's opaque-origin sandbox.
-const client = new RClient({ createWorker: RSandbox.factory(await loadExecutionSDK()), onMessage(item) {
+const sdk=await loadExecutionSDK();
+const makeClient=()=>new RClient({ createWorker: RSandbox.factory(sdk), onMessage(item) {
   if (item.type === 'queued') { clearInterval(clock); output.clear(); clearAnnotation(); status(item.text); state('running'); $('stop').disabled = false; }
   else if (item.type === 'status') status(item.text);
   else if (item.type === 'completions') attachedNames = item.names;
@@ -59,8 +66,9 @@ const client = new RClient({ createWorker: RSandbox.factory(await loadExecutionS
   } else if (item.type === 'warning') status(item.text);
   else if (item.type !== 'ready') output.add(item);
 }});
+let client=makeClient();
 const scheduler = new RenderScheduler({ detect: () => {}, render: () => run('auto'), renderDelay: 750 });
-function run(mode = 'manual') { navigationError=null; scheduler.cancel(); runSuppressed = false; persist(); client.run(editor.getValue(), $('stdin').value, mode); }
+function run(mode = 'manual') { navigationError=null; scheduler.cancel(); runSuppressed = false; aiHoldRun=false; persist(); client.run(editor.getValue(), $('stdin').value, mode); }
 $('run').onclick = () => run(); $('stop').onclick = () => { scheduler.cancel(); client.stop(); };
 editor.commands.addCommand({ name: 'run-r', bindKey: { win: 'Ctrl-Enter', mac: 'Command-Enter|Ctrl-Enter' }, exec: () => run() });
 document.addEventListener('keydown', event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); run(); } });
@@ -102,7 +110,7 @@ $('download-svg').onclick = () => RExport.download(output.current.svg, 'drawing.
 $('download-png').onclick = async () => { try { const item = output.current; const blob = item.png ? RExport.binary64(item.png, 'image/png') : item.svg ? await RExport.svgPNG(item.svg) : item.blob; RExport.download(blob, blob.type === 'image/jpeg' ? 'image.jpeg' : 'image.png'); } catch (error) { $('download-status').textContent = 'Image download failed: ' + error.message; } };
 const store=new HashBinStore({legacyStorage:session});
 const panel=new HashBinPanel({store,urlState,container:$('more'),getSnapshot:snapshot,getFingerprint:fingerprint,
-  onLoad(value,cid){navigationRevision++;urlState.cancel();scheduler.cancel();if(client.busy)client.stop();output.clear();clearAnnotation();state('idle');apply(value);
+  onLoad(value,cid){ai?.cancel();navigationRevision++;urlState.cancel();scheduler.cancel();if(client.busy)client.stop();output.clear();clearAnnotation();state('idle');apply(value);
     const link=cid?urlState.link(location.href,cid):links().href;saved=cid?{fingerprint:fingerprint(),link}:null;history.replaceState(null,'',link);
     if($('autorun').checked&&!runSuppressed)run('auto');else status('Ready — press Run (Ctrl+Enter)');},
   onSaved(cid,value,link){urlState.cancel();saved={fingerprint:value,link};history.replaceState(null,'',link);$('hashbin-cid').value=cid;
@@ -113,13 +121,13 @@ function edited() {
   if (applying) return;navigationError=null;
   navigationRevision++;urlState.cancel();panel.cancelLoad(); persist(true); inputCount(); clearAnnotation();
   saved=null;urlState.write(snapshot(),{run:!runSuppressed});
-  scheduler.cancel(); if ($('autorun').checked) scheduler.schedule({ detect: false });
+  scheduler.cancel(); if ($('autorun').checked&&!aiHoldRun) scheduler.schedule({ detect: false });
 }
 editor.session.on('change', edited); $('stdin').oninput = edited;
 $('autorun').onchange = () => { edited(); if ($('autorun').checked) run('auto'); };
 window.addEventListener('offline-before-reload', persist);
 window.addEventListener('beforeunload', persist);
-drafts.mount($('more'), value => { panel.cancelLoad(); scheduler.cancel(); client.stop(); output.clear(); clearAnnotation(); saved = null; apply(value); history.replaceState(null, '', links().fallback); selectTab('code'); status('Saved work restored — press Run.'); });
+drafts.mount($('more'), value => { ai?.cancel(); panel.cancelLoad(); scheduler.cancel(); client.stop(); output.clear(); clearAnnotation(); saved = null; apply(value); history.replaceState(null, '', links().fallback); selectTab('code'); status('Saved work restored — press Run.'); });
 $('offline-packages').onclick = async () => {
   if (!navigator.serviceWorker?.controller) { $('package-status').textContent = 'Wait for offline setup, then retry.'; return; }
   $('offline-packages').disabled = true; $('package-status').textContent = 'Preparing package list…';
@@ -128,12 +136,12 @@ $('offline-packages').onclick = async () => {
   navigator.serviceWorker.controller.postMessage({ type: 'cache-packages' }, [channel.port2]);
 };
 async function openURL() {
-  navigationError=null;const ownRevision=++navigationRevision;urlState.cancel();panel.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
+  ai?.cancel();navigationError=null;const ownRevision=++navigationRevision;urlState.cancel();panel.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
   output.clear(); clearAnnotation();
   state('idle');
   try {
     const parsed = urlState.parse(location.href);
-    runSuppressed = new URL(location.href).searchParams.get('run') === '0';
+    aiHoldRun=false;runSuppressed = new URL(location.href).searchParams.get('run') === '0';
     if (parsed?.kind === 'publish') {
       const published = await store.published(location.hash);
       if(ownRevision!==navigationRevision)return;
@@ -157,7 +165,12 @@ async function openURL() {
 store.retireLegacyTokens().catch(() => { /* Retried on the next load. */ });
 // Pasting a saved fragment into the current tab uses the same URL resolution as startup.
 let lastNavigation=location.href;const navigate=event=>{if(event.type==='hashchange'&&event.newURL!==location.href)return;if(location.href===lastNavigation)return;lastNavigation=location.href;void openURL();};window.addEventListener('hashchange',navigate);window.addEventListener('popstate',navigate);
+ai=await mountRAi({config,type,urlState:{...urlState,commit:(doc,options)=>urlState.commit(doc,{...options,run:false})},sdk,getSnapshot:snapshot,getFingerprint:fingerprint,container:$('more'),status,onApply:value=>{
+  scheduler.cancel();if(client.busy)client.stop();runSuppressed=true;aiHoldRun=true;apply(value);edited();scheduler.cancel();clearAnnotation();status('AI change accepted — press Run (Ctrl+Enter).');
+}});
+window.addEventListener('pagehide',()=>{scheduler.cancel();client.dispose();ai?.cancel();ai?.ai.disconnect();});
+window.addEventListener('pageshow',event=>{if(event.persisted){client=makeClient();if(globalThis.ROnline)ROnline.client=client;$('stop').disabled=true;state(navigationError?'error':'idle');status('Ready — press Run (Ctrl+Enter).');}});
 await openURL();
 // A small public inspection surface is useful for accessibility tools and integration tests.
-globalThis.ROnline = { editor, client, output, snapshot, run, selectTab };
+globalThis.ROnline = { editor, client, output, snapshot, run, selectTab, ai };
 })();

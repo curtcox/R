@@ -27,7 +27,7 @@ self.addEventListener('fetch',event=>{
     return response; // A rebuilt package can execute online, but is never cached as the pinned package.
   })());
 });
-self.FragmentKitOfflineConfig={extraCaches:[packageCache],preserveCache:name=>name.startsWith('ronline-spike-'),downloadConcurrency:6,
+self.FragmentKitOfflineConfig={extraCaches:[packageCache],preserveCache:name=>name.startsWith('ronline-spike-')||name.startsWith('ronline-ai-models-'),downloadConcurrency:6,
   onMessage(event){if(event.data?.type!=='cache-packages')return;
     return(async()=>{
       const port=event.ports[0],cache=await caches.open(packageCache),entries=Object.entries(hashes);let count=0;

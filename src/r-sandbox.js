@@ -11,8 +11,10 @@ const RSandbox = {
   },
   factory(sdk,{base=new URL('src/',location.href).href}={}) {
     return ()=>{
-      const sandbox=sdk.createSandbox({source:this.source(),base,proxy:[WEBR_URL,PACKAGE_URL],fetch:RAssets.fetch});
-      const handle={frame:sandbox.frame,onmessage:null,onerror:null,terminate:()=>sandbox.terminate(),postMessage:data=>sandbox.postMessage({...data,t256:Object.fromEntries(sharedT256)})};
+      const downloads=new AbortController();
+      const fetchRuntime=(input,options={})=>RAssets.fetch(input,{...options,signal:downloads.signal});
+      const sandbox=sdk.createSandbox({source:this.source(),base,proxy:[WEBR_URL,PACKAGE_URL],fetch:fetchRuntime});
+      const handle={frame:sandbox.frame,onmessage:null,onerror:null,terminate:()=>{downloads.abort();sandbox.terminate();},postMessage:data=>sandbox.postMessage({...data,t256:Object.fromEntries(sharedT256)})};
       let verified=Promise.resolve();
       sandbox.onmessage=event=>{
         const item=event.data;

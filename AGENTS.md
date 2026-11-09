@@ -73,7 +73,7 @@ Explicit program, source, example and CID URLs always load their document, indep
 
 ## Fragment Kit
 
-Shared contracts: `vendor/fragment-kit-v0.3.5/docs/contracts.md`. The JSON app config
+Shared contracts: `vendor/fragment-kit-v0.4.3/docs/contracts.md`. The JSON app config
 is `fragment-kit.config.json`; keep its registered public HashBin ID in index.html. The kit
 uses SDK v0.4.0 only for Publish. Keep the independent byte-pinned v0.3.0 execution
 SDK and cache verifier for webR isolation and first-fetch integrity. Do not alter
@@ -87,3 +87,20 @@ Use `npm run gallery:r -- --cached` to execute webR and update original SVGs;
 then serve the app and run `npm run gallery` for shared fingerprinted PNG covers.
 `node scripts/render-gallery.mjs --check` is browser-free. Regenerate offline
 hashes after shipped-file changes. Shared contracts use `testing-contract.config.mjs`.
+
+## AI adoption
+
+Keep AI optional through the separate pinned 0.4.3 entry point. Exact canonical
+R uses the separately registered R-only `/v0.4.3/` AI host; recovery and exact
+loopback development use direct mode; unknown origins use paste only. Budgets
+start at zero. No link load may call a provider or download model weights.
+Keys never enter editor storage, drafts, documents, links, logs or reports.
+AI may propose source and stdin only. Acceptance/undo must stop execution,
+preserve the autorun preference and write a run-disabled URL; explicit Run is
+required before accepted code executes. Navigation cancels proposals.
+Evaluation runs in fresh disposable opaque R sandboxes with bounded output,
+a setup deadline and the existing five-second execution limit. Keep browser
+model caches separate from app/offline readiness. Run `npm run test:ai` along
+with shared contracts and all actual-engine checks. Paid live checks are manual,
+never CI. Record actual source, deployment and browser evidence in
+`todo/ai_acceptance.json`; keep unrun native Safari/GPU/provider checks explicit.

@@ -24,7 +24,7 @@ function createServer(){
  }
  const server=http.createServer((req,res)=>{
   const url=new URL(req.url,'http://localhost'),file=fileFor(decodeURIComponent(url.pathname));
-  if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||fs.statSync(file).isDirectory()){res.writeHead(404);res.end('Not found');return;}
+  if(url.pathname.split('/').some(segment=>segment.startsWith('.'))||!file.startsWith(root+path.sep)||!fs.existsSync(file)||fs.statSync(file).isDirectory()){res.writeHead(404);res.end('Not found');return;}
   if(url.pathname.startsWith('/__256t__/')){const cid=path.basename(url.pathname);cidRequests.set(cid,(cidRequests.get(cid)||0)+1);}
   let data=served(file,url);
   if(path.basename(file)==='index.html'&&req.headers.cookie?.includes('ronline-test-client=1'))data=Buffer.from(data.toString().replace(/name="hashbin-client-id" content="[^"]*"/,'name="hashbin-client-id" content="test-client"'));
