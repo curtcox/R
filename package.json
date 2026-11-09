@@ -14,7 +14,9 @@
     "offline": "node scripts/update-offline.mjs",
     "serve": "node tests/browser/server.cjs",
     "test:urls": "node tests/browser/url-state.cjs",
-    "gallery:r": "node scripts/render-r-previews.mjs"
+    "gallery:r": "node scripts/render-r-previews.mjs",
+    "test:ai": "node tests/browser/ai-gallery-host.cjs && node tests/browser/ai.cjs",
+    "test:contracts": "playwright test --config vendor/fragment-kit-v0.4.3/testing/playwright.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

@@ -1,0 +1,128 @@
+{
+  "status": "verified source candidate; final remote deployment receipts tracked in Fragment Kit todo/r_ai_acceptance.json",
+  "kitVersion": "0.4.3",
+  "publishedPinVerified": true,
+  "suite": {
+    "cases": 25,
+    "engine": "webR 0.6.0 / R 4.6.0",
+    "references": "good passes and bad fails in fresh opaque sandboxes"
+  },
+  "local": {
+    "unit": 50,
+    "aiBrowsers": [
+      "chromium",
+      "webkit"
+    ],
+    "fullGalleryBrowsers": [
+      "chromium",
+      "webkit"
+    ],
+    "sharedContracts": {
+      "passed": 80,
+      "skippedOptional": 48,
+      "engines": [
+        "chromium",
+        "webkit"
+      ],
+      "emulatedDevices": [
+        "Pixel 7",
+        "iPhone 14"
+      ]
+    }
+  },
+  "canonical": "https://r.hashbin.page/",
+  "recovery": "https://curtcox.github.io/R/",
+  "aiHost": "https://ai.hashbin.page/v0.4.3/",
+  "limitations": [
+    "Native Safari is unverified.",
+    "GPU and on-device R model comparisons are unverified.",
+    "The paid comparison used OpenAI only; other providers are unverified for R.",
+    "This dated source-candidate record is not a deployment receipt; actual rollout is recorded separately."
+  ],
+  "comparison": {
+    "date": "2026-11-09T00:05:56.192Z",
+    "browser": "chromium",
+    "report": "ai-comparison.json",
+    "suite": "ai-suite.json",
+    "results": 75,
+    "repeats": 1,
+    "maxTokens": 512,
+    "actualCost": 0.0268728,
+    "taskSpentOrReserved": 0.275508408,
+    "approvedTaskCap": 10,
+    "models": [
+      {
+        "model": "openai:gpt-4.1-2025-04-14",
+        "n": 25,
+        "successes": 25,
+        "successRate": 1,
+        "interval": {
+          "low": 0.8668035060468213,
+          "high": 1
+        },
+        "validRate": 1,
+        "cost": 0.021344000000000005,
+        "costPerSuccess": 0.0008537600000000002,
+        "refusalRate": 0,
+        "repeatAgreement": null,
+        "top2": null,
+        "changedRatio": 0.1808800957045432,
+        "totalMs": 665.6800000095368,
+        "brier": null,
+        "logLoss": null,
+        "failures": {}
+      },
+      {
+        "model": "openai:gpt-4.1-mini-2025-04-14",
+        "n": 25,
+        "successes": 24,
+        "successRate": 0.96,
+        "interval": {
+          "low": 0.8045552759497747,
+          "high": 0.9929039496133008
+        },
+        "validRate": 1,
+        "cost": 0.0040432,
+        "costPerSuccess": 0.00016846666666666668,
+        "refusalRate": 0,
+        "repeatAgreement": null,
+        "top2": null,
+        "changedRatio": 0.13803894466027727,
+        "totalMs": 908.556000008583,
+        "brier": null,
+        "logLoss": null,
+        "failures": {
+          "checks": 1
+        }
+      },
+      {
+        "model": "openai:gpt-4o-mini-2024-07-18",
+        "n": 25,
+        "successes": 18,
+        "successRate": 0.72,
+        "interval": {
+          "low": 0.5242302810344169,
+          "high": 0.8571632616261843
+        },
+        "validRate": 0.96,
+        "cost": 0.0014856000000000001,
+        "costPerSuccess": 8.253333333333334e-05,
+        "refusalRate": 0,
+        "repeatAgreement": null,
+        "top2": null,
+        "changedRatio": 0.17716871792253952,
+        "totalMs": 1053.6839999914168,
+        "brier": null,
+        "logLoss": null,
+        "failures": {
+          "checks": 6,
+          "invalid-output": 1
+        }
+      }
+    ],
+    "conclusion": "Not enough evidence to separate these models.",
+    "publishedToHashBin": false
+  },
+  "review": "https://github.com/curtcox/R/pull/5",
+  "hostReview": "https://github.com/curtcox/hashbin.org/pull/246"
+}

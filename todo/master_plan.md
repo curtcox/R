@@ -521,3 +521,13 @@ so any remaining platform-specific failures are easier to diagnose.
   Regenerated docs and offline hashes and visually checked the five new cards.
 
 URL identity fix (2026-11-01): linked source, input and Auto-run take precedence over browser drafts. Local recovery is explicit and previous drafts are retained.
+
+### AI adoption — 2026-11-08
+
+Prepared published Fragment Kit 0.4.3 adoption with Ask/review/undo, model
+settings, gallery chooser and 25-case real-R evaluation. Existing 0.3.5 vendor
+bytes, execution SDK, R sandbox, packages, drafts, registration and legacy
+writers are retained. Acceptance holds auto-run until explicit Run. Canonical
+R uses a separate R-only versioned AI-host entry; recovery uses direct mode.
+Actual remote evidence is recorded in `todo/ai_acceptance.json`; prepared source
+is not treated as a completed deployment.

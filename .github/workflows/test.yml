@@ -3,17 +3,22 @@ on:
   pull_request:
   workflow_call:
   workflow_dispatch:
+    inputs:
+      live_ai_host:
+        description: Check deployed R AI host using a synthetic key and mocked provider
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
   test:
     uses: curtcox/Tools-for-pages-with-state-in-URL-fragments/.github/workflows/test.yml@v2
     with:
-      kit-path: vendor/fragment-kit-v0.3.5
+      kit-path: vendor/fragment-kit-v0.4.3
       contract-config: testing-contract.config.mjs
       server-command: PORT=8000 node tests/browser/server.cjs
-      browser-command: npm run packages -- --verify && node tests/browser/url-state.cjs && FULL_GALLERY=1 npm run test:browser
+      browser-command: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.live_ai_host == 'true' && 'node tests/browser/live-ai-host.mjs' || 'npm run packages -- --verify && node tests/browser/url-state.cjs && npm run test:ai && FULL_GALLERY=1 npm run test:browser' }}
   kit:
     uses: curtcox/Tools-for-pages-with-state-in-URL-fragments/.github/workflows/kit-check.yml@v2
     with:
-      kit-path: vendor/fragment-kit-v0.3.5
+      kit-path: vendor/fragment-kit-v0.4.3
