@@ -22,7 +22,8 @@
     "vendor/fragment-kit-v0.4.3/src",
     "vendor/fragment-kit-v0.4.3/vendor",
     "gallery/covers",
-    "ai-suite.json"
+    "ai-suite.json",
+    "ai-comparison.json"
   ],
   "remote": {
     "https://cdn.jsdelivr.net/npm/webr@0.6.0/dist/R.js": "162adb529111d739b37ef1b9f889eb7afbe4fb3288f8a58166cd6d0b04fd7376",

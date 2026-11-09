@@ -5,8 +5,8 @@
   "canonicalOrigin": "https://r.hashbin.page/",
   "recoveryOrigin": "https://curtcox.github.io/R/",
   "repo": "curtcox/R",
-  "docs": "https://curtcox.github.io/R/docs/",
-  "gallery": "https://curtcox.github.io/R/gallery.html",
+  "docs": "docs/",
+  "gallery": "gallery.html",
   "documentType": "r",
   "sandboxBootstrapHash": "sha256-IMEqdP+AkCKdxhM3X7mQM4pV/chykJXPvdtndD+XeH8=",
   "ai": {

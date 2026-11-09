@@ -124,7 +124,7 @@ function edited() {
   scheduler.cancel(); if ($('autorun').checked&&!aiHoldRun) scheduler.schedule({ detect: false });
 }
 editor.session.on('change', edited); $('stdin').oninput = edited;
-$('autorun').onchange = () => { edited(); if ($('autorun').checked) run('auto'); };
+$('autorun').onchange = () => { edited(); if ($('autorun').checked&&!aiHoldRun) run('auto'); };
 window.addEventListener('offline-before-reload', persist);
 window.addEventListener('beforeunload', persist);
 drafts.mount($('more'), value => { ai?.cancel(); panel.cancelLoad(); scheduler.cancel(); client.stop(); output.clear(); clearAnnotation(); saved = null; apply(value); history.replaceState(null, '', links().fallback); selectTab('code'); status('Saved work restored — press Run.'); });
@@ -168,7 +168,7 @@ let lastNavigation=location.href;const navigate=event=>{if(event.type==='hashcha
 ai=await mountRAi({config,type,urlState:{...urlState,commit:(doc,options)=>urlState.commit(doc,{...options,run:false})},sdk,getSnapshot:snapshot,getFingerprint:fingerprint,container:$('more'),status,onApply:value=>{
   scheduler.cancel();if(client.busy)client.stop();runSuppressed=true;aiHoldRun=true;apply(value);edited();scheduler.cancel();clearAnnotation();status('AI change accepted — press Run (Ctrl+Enter).');
 }});
-window.addEventListener('pagehide',()=>{scheduler.cancel();client.dispose();ai?.cancel();ai?.ai.disconnect();});
+window.addEventListener('pagehide',()=>{clearInterval(clock);scheduler.cancel();client.dispose();ai?.cancel();ai?.ai.disconnect();});
 window.addEventListener('pageshow',event=>{if(event.persisted){client=makeClient();if(globalThis.ROnline)ROnline.client=client;$('stop').disabled=true;state(navigationError?'error':'idle');status('Ready — press Run (Ctrl+Enter).');}});
 await openURL();
 // A small public inspection surface is useful for accessibility tools and integration tests.
