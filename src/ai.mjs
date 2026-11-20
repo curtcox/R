@@ -1,5 +1,5 @@
-import { createAi, createAskPanel, createAiSettings, createCompareModels } from '../vendor/fragment-kit-v0.4.3/src/ai/index.js';
-import { createDialog, createStorage, element, readResponse, text } from '../vendor/fragment-kit-v0.4.3/src/index.js';
+import { createAi, createAskPanel, createAiSettings, createCompareModels } from '../vendor/fragment-kit-v0.5.0/src/ai/index.js';
+import { createDialog, createStorage, element, readResponse, text } from '../vendor/fragment-kit-v0.5.0/src/index.js';
 /** Every probe is a fresh opaque sandbox, never the editor or persistent home. */
 export function createRAiCheck(sdk) {
   return ({ document, expected, signal }) => new Promise((resolve, reject) => {

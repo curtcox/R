@@ -1,8 +1,8 @@
 import { mountRAi } from './ai.mjs';
-import { handleAiCallback } from '../vendor/fragment-kit-v0.4.3/src/ai/index.js';
+import { handleAiCallback } from '../vendor/fragment-kit-v0.5.0/src/ai/index.js';
 let aiCallback=false,aiCallbackError;
 try {aiCallback=handleAiCallback();}catch(error){aiCallbackError=error;}
-import {LocalDrafts,RenderScheduler,HashBinPanel,compactShell,createShell,mountMobileTabs,createShareDialog,createQrDialog} from '../vendor/fragment-kit-v0.4.3/src/index.js';
+import {LocalDrafts,RenderScheduler,HashBinPanel,compactShell,createShell,mountMobileTabs,createShareDialog,createQrDialog,openLibrary,createLibraryPanel} from '../vendor/fragment-kit-v0.5.0/src/index.js';
 import {config,type,urlState,HashBinDocuments,HashBinStore,LZString,loadExecutionSDK} from './fragment-config.mjs';
 Object.assign(globalThis,{HashBinDocuments,LZString}); // t256 verification and established URL inspection surface.
 /* Editor orchestration. R and all package execution stay in the worker. */
@@ -109,17 +109,23 @@ $('download-text').onclick = () => RExport.download(output.text, 'output.txt');
 $('download-svg').onclick = () => RExport.download(output.current.svg, 'drawing.svg', 'image/svg+xml');
 $('download-png').onclick = async () => { try { const item = output.current; const blob = item.png ? RExport.binary64(item.png, 'image/png') : item.svg ? await RExport.svgPNG(item.svg) : item.blob; RExport.download(blob, blob.type === 'image/jpeg' ? 'image.jpeg' : 'image.png'); } catch (error) { $('download-status').textContent = 'Image download failed: ' + error.message; } };
 const store=new HashBinStore({legacyStorage:session});
+let libraryPanel=null;
 const panel=new HashBinPanel({store,urlState,container:$('more'),getSnapshot:snapshot,getFingerprint:fingerprint,
-  onLoad(value,cid){ai?.cancel();navigationRevision++;urlState.cancel();scheduler.cancel();if(client.busy)client.stop();output.clear();clearAnnotation();state('idle');apply(value);
+  async onLoad(value,cid){ai?.cancel();navigationRevision++;urlState.cancel();scheduler.cancel();if(client.busy)client.stop();output.clear();clearAnnotation();state('idle');apply(value);
     const link=cid?urlState.link(location.href,cid):links().href;saved=cid?{fingerprint:fingerprint(),link}:null;history.replaceState(null,'',link);
+    await libraryPanel?.opened(value,cid?{kind:'cid',source:cid}:{record:false});
     if($('autorun').checked&&!runSuppressed)run('auto');else status('Ready — press Run (Ctrl+Enter)');},
+  onDetached:result=>{void libraryPanel?.published(result);},
   onSaved(cid,value,link){urlState.cancel();saved={fingerprint:value,link};history.replaceState(null,'',link);$('hashbin-cid').value=cid;
     if(qrSave){qrSave=false;panel.dialog.close();qr.open(link);}}
 });
 panel.dialog.addEventListener('close',()=>{qrSave=false;});
+const library=await openLibrary({config,type}).catch(error=>{status(error.message);return null;});
+if(library)libraryPanel=createLibraryPanel({library,store,urlState,getSnapshot:snapshot,getFingerprint:fingerprint,container:document.querySelector('.toolbar'),drafts,
+  onLoad:value=>{ai?.cancel();navigationRevision++;panel.cancelLoad();scheduler.cancel();if(client.busy)client.stop();output.clear();clearAnnotation();state('idle');apply(value);history.replaceState(null,'',links().href);status('Library revision loaded — press Run (Ctrl+Enter).');}});
 function edited() {
   if (applying) return;navigationError=null;
-  navigationRevision++;urlState.cancel();panel.cancelLoad(); persist(true); inputCount(); clearAnnotation();
+  navigationRevision++;urlState.cancel();panel.cancelLoad();libraryPanel?.cancelLoad(); persist(true); inputCount(); clearAnnotation();
   saved=null;urlState.write(snapshot(),{run:!runSuppressed});
   scheduler.cancel(); if ($('autorun').checked&&!aiHoldRun) scheduler.schedule({ detect: false });
 }
@@ -127,7 +133,7 @@ editor.session.on('change', edited); $('stdin').oninput = edited;
 $('autorun').onchange = () => { edited(); if ($('autorun').checked&&!aiHoldRun) run('auto'); };
 window.addEventListener('offline-before-reload', persist);
 window.addEventListener('beforeunload', persist);
-drafts.mount($('more'), value => { ai?.cancel(); panel.cancelLoad(); scheduler.cancel(); client.stop(); output.clear(); clearAnnotation(); saved = null; apply(value); history.replaceState(null, '', links().fallback); selectTab('code'); status('Saved work restored — press Run.'); });
+drafts.mount($('more'), value => { ai?.cancel(); panel.cancelLoad(); scheduler.cancel(); client.stop(); output.clear(); clearAnnotation(); saved = null; apply(value); history.replaceState(null, '', links().fallback); selectTab('code'); status('Saved work restored — press Run.'); void libraryPanel?.opened(value,{record:false}); });
 $('offline-packages').onclick = async () => {
   if (!navigator.serviceWorker?.controller) { $('package-status').textContent = 'Wait for offline setup, then retry.'; return; }
   $('offline-packages').disabled = true; $('package-status').textContent = 'Preparing package list…';
@@ -136,25 +142,24 @@ $('offline-packages').onclick = async () => {
   navigator.serviceWorker.controller.postMessage({ type: 'cache-packages' }, [channel.port2]);
 };
 async function openURL() {
-  ai?.cancel();navigationError=null;const ownRevision=++navigationRevision;urlState.cancel();panel.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
+  ai?.cancel();navigationError=null;const ownRevision=++navigationRevision;urlState.cancel();panel.cancelLoad();libraryPanel?.cancelLoad(); scheduler.cancel(); if (client.busy) client.stop(); saved = null;
   output.clear(); clearAnnotation();
   state('idle');
   try {
     const parsed = urlState.parse(location.href);
     aiHoldRun=false;runSuppressed = new URL(location.href).searchParams.get('run') === '0';
     if (parsed?.kind === 'publish') {
-      const published = await store.published(location.hash);
-      if(ownRevision!==navigationRevision)return;
-      if (published?.snapshot) apply(published.snapshot);
-      if (published?.cid) { saved = { fingerprint: fingerprint(), link: HashBinDocuments.link(location.href, published.cid) }; $('hashbin-cid').value = published.cid; }
-      history.replaceState(null, '', saved ? saved.link : links().fallback);
-      $('hashbin-status').textContent = published?.error || 'Saved to HashBin.';
+      // Edits made while the return was verified win over it. Detached
+      // library/revision callbacks restore the snapshot and report onDetached.
+      const published = await panel.published(location.hash);
+      if (published && !published.kind && !published.error) $('hashbin-status').textContent = 'Saved to HashBin.';
     }
-    else if (parsed.kind==='source') apply(parsed.doc);
+    else if (parsed.kind==='source') { apply(parsed.doc); void libraryPanel?.opened(parsed.doc,{kind:'link'}); }
     else if (parsed.kind==='example'||parsed.kind==='none') {
       const sample = parsed.kind==='example' ? RExamples.catalog.find(value => value.id === parsed.id) : RExamples.catalog[0];
       if (!sample) throw Error('Sample not found. Open the Sample gallery to choose a program.');
-      apply({ src: sample.src, r: { stdin: sample.stdin, autorun: true } });
+      const doc = { src: sample.src, r: { stdin: sample.stdin, autorun: true } };
+      apply(doc); void libraryPanel?.opened(doc,{record:false});
       if(parsed.kind==='example')history.replaceState(null,'',links().href);
     }
     if (parsed?.kind === 'cid') { $('hashbin-cid').value = parsed.cid; await panel.load(parsed.cid);if(ownRevision===navigationRevision&&panel.status.textContent!=='Loaded from HashBin.'){navigationError=panel.status.textContent;status(navigationError);} }
@@ -166,7 +171,7 @@ store.retireLegacyTokens().catch(() => { /* Retried on the next load. */ });
 // Pasting a saved fragment into the current tab uses the same URL resolution as startup.
 let lastNavigation=location.href;const navigate=event=>{if(event.type==='hashchange'&&event.newURL!==location.href)return;if(location.href===lastNavigation)return;lastNavigation=location.href;void openURL();};window.addEventListener('hashchange',navigate);window.addEventListener('popstate',navigate);
 ai=await mountRAi({config,type,urlState:{...urlState,commit:(doc,options)=>urlState.commit(doc,{...options,run:false})},sdk,getSnapshot:snapshot,getFingerprint:fingerprint,container:$('more'),status,onApply:value=>{
-  scheduler.cancel();if(client.busy)client.stop();runSuppressed=true;aiHoldRun=true;apply(value);edited();scheduler.cancel();clearAnnotation();status('AI change accepted — press Run (Ctrl+Enter).');
+  scheduler.cancel();if(client.busy)client.stop();runSuppressed=true;aiHoldRun=true;apply(value);edited();scheduler.cancel();clearAnnotation();status('AI change accepted — press Run (Ctrl+Enter).');void libraryPanel?.opened(value,{record:false});
 }});
 window.addEventListener('pagehide',()=>{clearInterval(clock);scheduler.cancel();client.dispose();ai?.cancel();ai?.ai.disconnect();});
 window.addEventListener('pageshow',event=>{if(event.persisted){client=makeClient();if(globalThis.ROnline)ROnline.client=client;$('stop').disabled=true;state(navigationError?'error':'idle');status('Ready — press Run (Ctrl+Enter).');}});

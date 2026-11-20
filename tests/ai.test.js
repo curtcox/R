@@ -1,7 +1,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const {config,type}=require('../src/fragment-config.mjs');
 const {createRAiCheck}=require('../src/ai.mjs');
-const {createAi,parseSuite}=require('../vendor/fragment-kit-v0.4.3/src/ai/index.js');
+const {createAi,parseSuite}=require('../vendor/fragment-kit-v0.5.0/src/ai/index.js');
 const suite=require('../ai-suite.json');
 test('exact R and recovery deployments are idle until consent and start with zero caps',async()=>{
  const cases=[['https://r.hashbin.page/','host'],['https://curtcox.github.io/R/','direct'],['https://evil.example/','paste']];

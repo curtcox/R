@@ -16,7 +16,7 @@
     "test:urls": "node tests/browser/url-state.cjs",
     "gallery:r": "node scripts/render-r-previews.mjs",
     "test:ai": "node tests/browser/ai-gallery-host.cjs && node tests/browser/ai.cjs",
-    "test:contracts": "playwright test --config vendor/fragment-kit-v0.4.3/testing/playwright.config.js"
+    "test:contracts": "playwright test --config vendor/fragment-kit-v0.5.0/testing/playwright.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

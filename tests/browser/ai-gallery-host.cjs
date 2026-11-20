@@ -1,7 +1,7 @@
 /* Canonical gallery policy and host transport, with no provider or credentials. */
 const {chromium,firefox,webkit}=require('playwright');
 const fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'../..'),pin=path.join(root,'vendor/fragment-kit-v0.4.3'),origin='https://r.hashbin.page',host='https://ai.hashbin.page';
+const root=path.resolve(__dirname,'../..'),pin=path.join(root,'vendor/fragment-kit-v0.5.0'),origin='https://r.hashbin.page',host='https://ai.hashbin.page';
 (async()=>{
  const engine=process.env.BROWSER||'chromium',browser=await({chromium,firefox,webkit}[engine]).launch();
  try{

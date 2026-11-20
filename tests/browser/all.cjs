@@ -44,7 +44,7 @@ const name=process.env.BROWSER||'chromium';
   await page.setViewportSize({width:375,height:812});await page.goto(base+'/?run=0');await ready();await page.getByRole('tab',{name:'Code',exact:true}).click();await page.locator('#editor').waitFor({state:'visible'});await page.getByRole('tab',{name:/^Input/}).click();await page.locator('#stdin').waitFor({state:'visible'});assert.ok((await page.locator('#stdin').boundingBox()).height>200);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.ok((await page.locator('#run').boundingBox()).height>=44);assert.ok((await page.locator('label.check').first().boundingBox()).height>=44);
   console.log(name+': offline');await page.waitForFunction(()=>document.getElementById('offline-status').textContent==='Available offline',null,{timeout:180000});
-  await page.waitForFunction(()=>ROnline.client.active.ready&&(!ROnline.client.spare||ROnline.client.spare.ready),null,{timeout:120000});
+  await page.waitForFunction(()=>globalThis.ROnline?.client?.active?.ready===true&&(!globalThis.ROnline?.client?.spare||globalThis.ROnline?.client?.spare?.ready===true),null,{timeout:120000});
   await context.setOffline(true);await page.reload();await ready();await run('cat("offline success\\n");plot(1:3)');assert.match(await page.locator('#output').innerText(),/offline success/);await page.locator('#output .figure-canvas').waitFor();await context.setOffline(false);
   console.log(name+': optional gallery packages offline');
   await page.locator('#more-toggle').click();await page.locator('#offline-packages').click();

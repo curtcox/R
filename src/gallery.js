@@ -1,5 +1,5 @@
-import {mountGallery,createStorage} from '../vendor/fragment-kit-v0.4.3/src/index.js';
-import {createAi,createAiSettings,createSampleChooser,handleAiCallback} from '../vendor/fragment-kit-v0.4.3/src/ai/index.js';
+import {mountGallery,createStorage} from '../vendor/fragment-kit-v0.5.0/src/index.js';
+import {createAi,createAiSettings,createSampleChooser,handleAiCallback} from '../vendor/fragment-kit-v0.5.0/src/ai/index.js';
 import {urlState,config,type} from './fragment-config.mjs';
 const container=document.getElementById('gallery');
 let callback=false,error;try{callback=handleAiCallback();}catch(e){error=e;}

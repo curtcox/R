@@ -3,7 +3,7 @@ import { chromium, firefox, webkit } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
-const root=path.resolve('vendor/fragment-kit-v0.4.3'),hostOrigin='https://ai.hashbin.page',appOrigin='https://r.hashbin.page';
+const root=path.resolve('vendor/fragment-kit-v0.5.0'),hostOrigin='https://ai.hashbin.page',appOrigin='https://r.hashbin.page';
 const hostURL=hostOrigin+'/v0.4.3/host.html',ref='openai:gpt-4.1-mini-2025-04-14',key='synthetic-host-acceptance-key';
 const records=[];
 await fs.mkdir('test-results',{recursive:true});
