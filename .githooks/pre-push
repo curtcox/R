@@ -1,0 +1,4 @@
+#!/bin/sh
+# Rejects pushes that add files too big for their type (see scripts/check-file-sizes.mjs).
+# Git passes the ref updates on stdin; bypass once with: git push --no-verify
+exec node "$(git rev-parse --show-toplevel)/scripts/check-file-sizes.mjs" --pre-push "$@"

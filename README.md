@@ -99,6 +99,20 @@ docs run `npm run docs`. After changing shipped assets run `npm run offline` and
 pins without rewriting them. Caches, browser installations and test output are
 ignored. Gallery generation uses the same RCore and R helpers as the browser.
 
+### File size limits
+
+`npm run sizes` rejects files that are too big for their type; `npm run check`
+runs it in CI, and `npm ci` installs a `.githooks/pre-push` hook that checks
+every blob a push would send, including files added and later deleted. Limits
+live in `scripts/check-file-sizes.mjs`: 128 KiB for code, markup, data and SVG;
+512 KiB for vendored JS (`vendor/`, `ace/`, `*.min.js`); 256 KiB for images and
+fonts; 4 MiB for wasm; 1 MiB for lockfiles; 512 KiB otherwise; nothing above
+50 MiB. Known offenders are pinned to their exact size in
+`scripts/file-size-baseline.json` and may not grow. After shrinking or removing
+one, run `npm run sizes -- --update` to tighten the baseline (the check fails
+until you do). To deliberately keep a new large file, run
+`npm run sizes -- --accept <path>` and add a `note` explaining why.
+
 `npm run serve` starts a local development server with a local runtime mirror.
 GitHub Pages serves the checked-in root directly and loads the pinned CDN.
 `.github/workflows/deploy.yml` is copied unchanged from Python Online: each push

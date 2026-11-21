@@ -531,3 +531,12 @@ writers are retained. Acceptance holds auto-run until explicit Run. Canonical
 R uses a separate R-only versioned AI-host entry; recovery uses direct mode.
 Actual remote evidence is recorded in `todo/ai_acceptance.json`; prepared source
 is not treated as a completed deployment.
+
+### File size limits — 2026-11-21
+
+Added `npm run sizes` (`scripts/check-file-sizes.mjs`) with per-type limits,
+run by `npm run check` in CI and by a `.githooks/pre-push` hook that `npm ci`
+installs. The pre-push check covers every blob in the pushed commits. Existing
+oversized files form a ratchet in `scripts/file-size-baseline.json`: the
+vendored wllama wasm pair (16.0 MB, 8.8 MB) in both the 0.5.0 kit and the
+retained 0.4.3 kit. Removing the unreferenced 0.4.3 copy would drop two entries.

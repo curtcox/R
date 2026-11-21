@@ -17,5 +17,6 @@ for(const script of ['render-docs.mjs','update-offline.mjs']){
  const result=spawnSync(process.execPath,[path.join(root,'scripts',script),'--check'],{encoding:'utf8'});if(result.status!==0)throw Error(result.stderr);process.stdout.write(result.stdout);
 }
 console.log('Syntax, gallery fingerprints, docs and offline hashes are current.');
+const sizes=spawnSync(process.execPath,['scripts/check-file-sizes.mjs'],{stdio:'inherit'});if(sizes.status)process.exit(sizes.status);
 const kit=spawnSync(process.execPath,['vendor/fragment-kit-v0.5.0/tools/check.mjs','--config','fragment-kit.config.json'],{stdio:'inherit'});if(kit.status)process.exit(kit.status);
 const gallery=spawnSync(process.execPath,['scripts/render-gallery.mjs','--check'],{stdio:'inherit'});if(gallery.status)process.exit(gallery.status);

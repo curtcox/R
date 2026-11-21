@@ -63,7 +63,11 @@ The plan is todo/master_plan.md; update its implementation record when decisions
    chromium/firefox/webkit; FULL_GALLERY=1 executes every gallery URL. Browser CI
    runs all three independently from deployment. Do not claim Firefox passed when
    its local build fails before opening a page; verify the Linux CI result.
-6. The reusable Pages workflow uploads the root with no build step after the shared unit/contracts and actual-engine suites pass. Do not commit node_modules or caches.
+6. npm run sizes (also in npm run check and the .githooks pre-push hook) enforces
+   per-type size limits. scripts/file-size-baseline.json is a ratchet: entries may
+   only shrink (npm run sizes -- --update). Use --accept with a note only for a
+   file that genuinely must be large, such as immutable vendored wasm.
+7. The reusable Pages workflow uploads the root with no build step after the shared unit/contracts and actual-engine suites pass. Do not commit node_modules or caches.
    Check workflow/live page before claiming deployment. HashBin registration is
    a user setup step. Do not invent a client ID or spend the user's HashBin balance.
 

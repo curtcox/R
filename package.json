@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prepare": "node scripts/check-file-sizes.mjs --install-hook",
     "test": "node --test tests/*.test.js",
     "spike:manifest": "node spike/update-manifest.cjs",
     "test:spike": "node spike/test.cjs",
     "test:browser": "node tests/browser/all.cjs",
     "check": "node scripts/check.mjs",
+    "sizes": "node scripts/check-file-sizes.mjs",
     "gallery": "node scripts/render-gallery.mjs",
     "packages": "node scripts/pin-packages.mjs",
     "docs": "node scripts/render-docs.mjs",
