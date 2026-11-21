@@ -537,6 +537,6 @@ is not treated as a completed deployment.
 Added `npm run sizes` (`scripts/check-file-sizes.mjs`) with per-type limits,
 run by `npm run check` in CI and by a `.githooks/pre-push` hook that `npm ci`
 installs. The pre-push check covers every blob in the pushed commits. Existing
-oversized files form a ratchet in `scripts/file-size-baseline.json`: the
-vendored wllama wasm pair (16.0 MB, 8.8 MB) in both the 0.5.0 kit and the
-retained 0.4.3 kit. Removing the unreferenced 0.4.3 copy would drop two entries.
+oversized files form a ratchet in `scripts/file-size-baseline.json`. The
+unreferenced `vendor/fragment-kit-v0.4.3` copy (25 MB) was then removed, leaving
+only the immutable 0.5.0 wllama wasm pair (16.0 MB, 8.8 MB).

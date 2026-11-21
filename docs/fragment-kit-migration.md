@@ -18,8 +18,9 @@ checks of source identity, CID/QR, offline reload, review and phone layout.
 
 ## Optional AI support
 
-R pins the published Fragment Kit 0.4.3, while keeping the previous kit and
-immutable 0.3.0 execution SDK/cache bytes. The R interpreter and its isolation
+R pins the published Fragment Kit 0.5.0, while keeping the 0.3.5 kit and the
+immutable 0.3.0 execution SDK/cache bytes. The unused 0.4.3 copy was removed.
+The AI host entry below is a remote URL and is not served from the removed copy. The R interpreter and its isolation
 remain app-owned. Ask supports paste handoff, user-connected providers,
 review, rejection, refinement, undo and local comparison. Gallery metadata
 suggestions supplement ordinary text and tag search.

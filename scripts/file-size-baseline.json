@@ -1,14 +1,6 @@
 {
   "about": "File size ratchet for scripts/check-file-sizes.mjs. Each entry pins an oversized file to its exact size; it may not grow. Run npm run sizes -- --update after shrinking or removing one.",
   "files": {
-    "vendor/fragment-kit-v0.4.3/vendor/wllama-3.8.1/compat.wasm": {
-      "bytes": 16005007,
-      "note": "Previous Fragment Kit 0.4.3 copy of the wllama 3.8.1 runtime, retained alongside 0.5.0; drop it when the old kit directory is removed."
-    },
-    "vendor/fragment-kit-v0.4.3/vendor/wllama-3.8.1/wllama.wasm": {
-      "bytes": 8763949,
-      "note": "Previous Fragment Kit 0.4.3 copy of the wllama 3.8.1 runtime, retained alongside 0.5.0; drop it when the old kit directory is removed."
-    },
     "vendor/fragment-kit-v0.5.0/vendor/wllama-3.8.1/compat.wasm": {
       "bytes": 16005007,
       "note": "Vendored Fragment Kit 0.5.0 wllama 3.8.1 runtime for optional in-browser AI; vendored bytes must not change."

@@ -38,7 +38,7 @@
     "https://repo.r-wasm.org/bin/emscripten/contrib/4.6/yaml_2.3.12.tgz": "027e4bd87fcd16d0ba744dd41c51e2eb711c07d873f6050e65c8daf454d74f13"
   },
   "prefix": "ronline",
-  "version": "ronline-4d909a18b95671f1",
+  "version": "ronline-63afc1a87b13b62b",
   "assets": [
     "LICENSE-graphvizonline",
     "LICENSE-svg-pan-zoom",
@@ -439,8 +439,8 @@
     "docs/256t-calls.md": "75c0504f2f90d279096849d2c95ab1e0a8434274124528d7174ad2f00f940304",
     "docs/ai.html": "de22f08704ff33ff25af95b7fdb1737aac5df9bd37cb5dd6b4b90c22e50bf467",
     "docs/ai.md": "b4a3262ffbb5857105813a9ad41739597c85856bcf0a66086f5ae1b2617d2353",
-    "docs/fragment-kit-migration.html": "ef40cc5e21ef8b73b46ad60a3d5915808b030ec154ff68deeca459cd08625a67",
-    "docs/fragment-kit-migration.md": "b870edae1d389bcd8fb1daf67c7a40c632cd1167776e6744b65144162ac0a239",
+    "docs/fragment-kit-migration.html": "f8398d571b6726bf7aa9fcb1681cbd4bcb290ac4b074ea6157ac65cd0331dd6b",
+    "docs/fragment-kit-migration.md": "048609da8424b7d0807584f201b1271c9910ddd53283648fa382b76d6d3d4e5c",
     "docs/graphics.html": "c43bd797c05b2beb5303aa905b6d3f560b6c37a81246f865815a84a331007a1f",
     "docs/graphics.md": "40a2241c349b931c956bdfb8030692724cc2d44085c07880f6b6cad57f7ff9be",
     "docs/index.html": "a5fc75251d472608e05da99bf240c5af466eb65cea320a8a96e4457b16c5e590",
